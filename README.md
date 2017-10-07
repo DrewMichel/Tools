@@ -1,2 +1,2 @@
 # Tools
-Simple implementations that could be recycled.
+Specific implementations that could be recycled.
