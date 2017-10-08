@@ -17,7 +17,7 @@ public final class SumIteration
      * @param n value used to get the sum of n
      * @return the sum of n
      */
-    public static final long findSum(long n)
+    public static long findSum(long n)
     {
         long sum = 0;
         long abs = Math.abs(n);
@@ -43,7 +43,7 @@ public final class SumIteration
      * @param n value used to get the sum of n
      * @return the sum of n
      */
-    public static final int findSum(int n)
+    public static int findSum(int n)
     {
         int sum = 0;
         int abs = Math.abs(n);

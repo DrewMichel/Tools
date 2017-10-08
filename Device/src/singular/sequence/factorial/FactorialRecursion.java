@@ -19,7 +19,7 @@ public final class FactorialRecursion
      * @return The factorial value of n
      * @throws InvalidFactorialException if a negative value is entered
      */
-    public static final long findFactorial(long n) throws InvalidFactorialException
+    public static long findFactorial(long n) throws InvalidFactorialException
     {
         if(0 > n)
         {
@@ -37,7 +37,7 @@ public final class FactorialRecursion
      * @param n desired factorial position
      * @return the factorial value of n
      */
-    private static final long factorial(long n)
+    private static long factorial(long n)
     {
         if(2 > n)
         {

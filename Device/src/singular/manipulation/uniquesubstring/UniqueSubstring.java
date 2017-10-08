@@ -18,7 +18,7 @@ public final class UniqueSubstring
      * @param original String
      * @return the longest substring without repeating characters
      */
-    public final static String findLongestUniqueSubstring(String original)
+    public static String findLongestUniqueSubstring(String original)
     {
         String current = "", out = "";
 

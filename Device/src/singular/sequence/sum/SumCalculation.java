@@ -20,7 +20,7 @@ public final class SumCalculation
      * @param n value used to get the sum of n
      * @return the sum of n
      */
-    public static final long findSum(long n)
+    public static long findSum(long n)
     {
         int modifier = 1;
 
@@ -38,7 +38,7 @@ public final class SumCalculation
      * @param n value used to get the sum of n
      * @return the sum of n
      */
-    public static final int findSum(int n)
+    public static int findSum(int n)
     {
         int modifier = 1;
 
@@ -56,7 +56,7 @@ public final class SumCalculation
      * @param n value used to get the sum of n
      * @return the sum of n
      */
-    private static final long sum(long n)
+    private static long sum(long n)
     {
         return ((n * (n + 1)) / 2);
     }
@@ -67,7 +67,7 @@ public final class SumCalculation
      * @param n value used to get the sum of n
      * @return the sum of n
      */
-    private static final int sum(int n)
+    private static int sum(int n)
     {
         return ((n * (n + 1)) / 2);
     }

@@ -5,6 +5,9 @@ package singular.sequence.factorial;
  *
  * This class can be used to track current and previous factorial
  * values along with their respective indices
+ *
+ * It is recommended that mutator methods are used with care to avoid
+ * non-factorial numbers
  */
 public class FactorialTracker
 {
@@ -74,5 +77,37 @@ public class FactorialTracker
     public long getPreviousIndex()
     {
         return previousIndex;
+    }
+
+    // Object overrides
+
+    @Override
+    public String toString()
+    {
+        return ("#" + previousIndex + " " + previousFactorial + " -> #" + currentIndex + " " + currentFactorial);
+    }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if(other == null)
+        {
+            return false;
+        }
+
+        if(other.getClass() != this.getClass())
+        {
+            return false;
+        }
+
+        FactorialTracker temp = (FactorialTracker) other;
+
+        return (this.currentFactorial == temp.currentFactorial && this.currentIndex == temp.currentIndex && this.previousFactorial == temp.previousFactorial && this.previousIndex == temp.previousIndex);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return ((int)(currentFactorial * currentIndex * previousFactorial * previousIndex));
     }
 }

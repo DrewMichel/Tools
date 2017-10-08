@@ -21,7 +21,7 @@ public final class ReverseDigit
      * @param digit original value
      * @return reversed digit
      */
-    public static final int reverseDigit(int digit)
+    public static int reverseDigit(int digit)
     {
         StringBuilder temp = new StringBuilder();
         StringBuilder out = new StringBuilder();
@@ -52,7 +52,7 @@ public final class ReverseDigit
      * @param digit original value
      * @return reversed digit
      */
-    public static final long reverseDigit(long digit)
+    public static long reverseDigit(long digit)
     {
         StringBuilder temp = new StringBuilder();
         StringBuilder out = new StringBuilder();
