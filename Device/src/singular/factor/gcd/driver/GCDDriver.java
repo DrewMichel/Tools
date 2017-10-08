@@ -12,6 +12,6 @@ public class GCDDriver
     public static void main(String[] args)
     {
         System.out.println("TESTING GREATEST COMMON DIVISOR's FIND GCD");
-        System.out.println(GreatestCommonDivisor.findGCD(21,7));
+        System.out.println(GreatestCommonDivisor.findGCD(21,-7));
     }
 }

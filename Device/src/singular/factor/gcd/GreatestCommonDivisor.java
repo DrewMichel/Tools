@@ -16,11 +16,11 @@ public final class GreatestCommonDivisor
      *
      * @param numerator parameter value
      * @param denominator parameter value
-     * @return greatest common divisor of the numerator and denominator
+     * @return the absolute value of the greatest common divisor of the numerator and denominator
      */
     public static long findGCD(long numerator, long denominator)
     {
-        long gcd, swap;
+        long swap;
 
         while(numerator != 0 && denominator != 0)
         {
@@ -29,9 +29,7 @@ public final class GreatestCommonDivisor
             numerator = swap;
         }
 
-        gcd = numerator + denominator;
-
-        return gcd;
+        return Math.abs(numerator + denominator);
     }
 
     /**
@@ -39,11 +37,11 @@ public final class GreatestCommonDivisor
      *
      * @param numerator parameter value
      * @param denominator parameter value
-     * @return greatest common divisor of the numerator and denominator
+     * @return the absolute value of the greatest common divisor of the numerator and denominator
      */
     public static int findGCD(int numerator, int denominator)
     {
-        int gcd, swap;
+        int swap;
 
         while(numerator != 0 && denominator != 0)
         {
@@ -52,8 +50,6 @@ public final class GreatestCommonDivisor
             numerator = swap;
         }
 
-        gcd = numerator + denominator;
-
-        return gcd;
+        return Math.abs(numerator + denominator);
     }
 }
