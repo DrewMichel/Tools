@@ -15,11 +15,23 @@ public class BinarySearchTreeDriver
         BinarySearchTree<String> binaryTree1 = new BinarySearchTree<>();
         BinarySearchTree<Integer> binaryTree2 = new BinarySearchTree<>();
 
+        int lastValue = 0;
+
         for(int i = 0; i < 20; i++)
         {
-            binaryTree2.add((int)(Math.random() * 100) + 1);
+            lastValue = (int)((Math.random() * 100) + 1);
+            binaryTree2.add(lastValue);
         }
 
         System.out.println(binaryTree2);
+
+        /*
+        System.out.println("DELETING: " + lastValue);
+        System.out.println("RETURNED: " + binaryTree2.delete(lastValue));
+
+        System.out.println(binaryTree2);
+        */
+
+        System.out.println(binaryTree2.breadthFirstTraversal());
     }
 }
