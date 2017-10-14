@@ -188,6 +188,8 @@ public class BinaryTree<E> implements Serializable, Iterable<E>
             {
                 stack.push(currentNode);
 
+                currentNode = currentNode.right;
+
                 while(currentNode.left != null)
                 {
                     stack.push(currentNode);

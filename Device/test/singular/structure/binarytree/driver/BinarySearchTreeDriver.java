@@ -3,6 +3,8 @@ package singular.structure.binarytree.driver;
 import singular.structure.binarytree.BinarySearchTree;
 import singular.structure.binarytree.BinaryTree;
 
+import java.util.Iterator;
+
 /**
  * Created by Andrew Michel on 10/10/2017.
  *
@@ -23,6 +25,7 @@ public class BinarySearchTreeDriver
             binaryTree2.add(lastValue);
         }
 
+        System.out.println("TESTING PREORDER TRAVERSAL TO STRING");
         System.out.println(binaryTree2);
 
         /*
@@ -32,6 +35,21 @@ public class BinarySearchTreeDriver
         System.out.println(binaryTree2);
         */
 
+        //System.out.println(binaryTree2.breadthFirstTraversal());
+
+        StringBuilder data = new StringBuilder();
+
+        Iterator iterator = binaryTree2.iterator();
+
+        while(iterator.hasNext())
+        {
+            data.append(iterator.next() + " ");
+        }
+
+        System.out.println("TESTING BREADTH FIRST TRAVERSAL");
         System.out.println(binaryTree2.breadthFirstTraversal());
+
+        System.out.println("TESTING INORDER TRAVERSAL ITERATOR");
+        System.out.println(data.toString());
     }
 }
