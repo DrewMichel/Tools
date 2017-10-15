@@ -14,7 +14,7 @@ public class ArithmeticBaseDriver
     public static void main(String[] args)
     {
         Scanner keyboard = new Scanner(System.in);
-        String first, second, added;
+        String first, second, added, reduced;
         int base;
 
         System.out.print("Enter first number: ");
@@ -27,7 +27,9 @@ public class ArithmeticBaseDriver
         base = keyboard.nextInt();
 
         added = ArithmeticBase.add(first, second, base);
+        reduced = ArithmeticBase.sub(first, second, base);
 
         System.out.println("Numbers added: " + added);
+        System.out.println("Numbers reduced: " + reduced);
     }
 }
