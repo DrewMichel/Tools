@@ -29,7 +29,7 @@ public class ArithmeticBaseDriver
         added = ArithmeticBase.add(first, second, base);
         reduced = ArithmeticBase.sub(first, second, base);
 
-        System.out.println("Numbers added:       " + added);
-        System.out.println("Numbers reduced:     " + reduced);
+        System.out.println("Numbers added:       " + String.format("%" + (added.length() + 1) + "s", added));
+        System.out.println("Numbers reduced:     " + String.format("%" + (added.length() + 1) + "s", reduced));
     }
 }
