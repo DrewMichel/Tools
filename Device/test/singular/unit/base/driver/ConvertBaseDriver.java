@@ -42,7 +42,6 @@ public class ConvertBaseDriver
 
     }
 
-
     public static Integer findLowestBase(int value, int onesPlace)
     {
         String toString;
@@ -62,7 +61,6 @@ public class ConvertBaseDriver
                 return i;
             }
         }
-
 
         return value - onesPlace;
     }

@@ -17,19 +17,19 @@ public class ArithmeticBaseDriver
         String first, second, added, reduced;
         int base;
 
-        System.out.print("Enter first number: ");
+        System.out.print("Enter first number:  ");
         first = keyboard.nextLine();
 
         System.out.print("Enter second number: ");
         second = keyboard.nextLine();
 
-        System.out.print("Enter shared base: ");
+        System.out.print("Enter shared base:   ");
         base = keyboard.nextInt();
 
         added = ArithmeticBase.add(first, second, base);
         reduced = ArithmeticBase.sub(first, second, base);
 
-        System.out.println("Numbers added: " + added);
-        System.out.println("Numbers reduced: " + reduced);
+        System.out.println("Numbers added:       " + added);
+        System.out.println("Numbers reduced:     " + reduced);
     }
 }

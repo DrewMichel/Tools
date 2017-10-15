@@ -16,7 +16,7 @@ public final class ArithmeticBase
 
         String sign = "";
 
-        if(Integer.parseInt(subtrahend) > Integer.parseInt(minuend))
+        if(isGreater(subtrahendBuilder, minuendBuilder))
         {
             sign = "-";
             StringBuilder swap = minuendBuilder;
@@ -27,6 +27,30 @@ public final class ArithmeticBase
         return sign + performSubtraction(minuendBuilder, subtrahendBuilder, commonBase);
     }
 
+    private static boolean isGreater(StringBuilder first, StringBuilder second)
+    {
+        int firstChar, secondChar;
+
+        int length = first.length();
+
+        for(int i = 0; i < length; i++)
+        {
+            firstChar = first.charAt(i);
+            secondChar = second.charAt(i);
+
+            if(firstChar > secondChar)
+            {
+                return true;
+            }
+            else if(secondChar > firstChar)
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
     private static String performSubtraction(StringBuilder minuend, StringBuilder subtrahend, int commonBase)
     {
         StringBuilder out = new StringBuilder();
@@ -34,13 +58,6 @@ public final class ArithmeticBase
         int firstChar, secondChar, carry = 0, total = 0, offset = '0';
 
         int length = minuend.length() - 1;
-
-        /*
-        if(Integer.parseInt(subtrahend.toString()) > Integer.parseInt(minuend.toString()))
-        {
-            out.append("-");
-        }
-        */
 
         for(int i = length; i >= 0; i--)
         {
@@ -58,7 +75,7 @@ public final class ArithmeticBase
                 carry = 0;
             }
 
-            out.append(total); // % commonBase
+            out.append(total);
         }
 
         while(out.length() > 0 && out.charAt(out.length() - 1) == '0')
