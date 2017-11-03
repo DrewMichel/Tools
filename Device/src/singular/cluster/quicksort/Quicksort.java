@@ -1,0 +1,79 @@
+package singular.cluster.quicksort;
+
+import java.util.List;
+
+/**
+ * Created by Andrew Michel on 11/3/2017.
+ */
+public final class Quicksort
+{
+    public static void sort(double[] array)
+    {
+        sort(array, 0, array.length - 1);
+    }
+
+    public static void sort(double[] array, int startIndex, int endIndex)
+    {
+        if(endIndex - startIndex == 1 && array[startIndex] > array[endIndex])
+        {
+            double swap = array[startIndex];
+            array[startIndex] = array[endIndex];
+            array[endIndex] = swap;
+        }
+        else if(endIndex - startIndex > 1)
+        {
+            int splitPoint = split(array, startIndex, endIndex);
+
+            sort(array, startIndex, splitPoint);
+            sort(array, splitPoint + 1, endIndex);
+        }
+    }
+
+    private static int split(double[] array, int start, int end)
+    {
+        int size = end - start + 1;
+        double[] tempArray = new double[size];
+
+        double splitValue = array[start]; // original
+        //double splitValue = (array[start] + array[end] + array[size / 2]) / 3; // handout that doesn't work
+        //double splitValue = array[start + ((end - start) / 2)];
+        //double splitValue = array[(start + end) / 2];
+
+        int up = 0, down = size - 1;
+
+        for(int i = start + 1; i <= end; i++)
+        {
+            if(array[i] <= splitValue)
+            {
+                tempArray[up] = array[i];
+                up++;
+            }
+            else
+            {
+                tempArray[down] = array[i];
+                down--;
+            }
+        }
+
+        tempArray[up] = array[start];
+
+        for(int i = 0; i < size; i++)
+        {
+            array[start + i] = tempArray[i];
+        }
+
+        return (start + up);
+    }
+
+    /*
+    public static<E extends Comparable<E>> void sort(List<E> list)
+    {
+        sort(list, 0, list.size() - 1);
+    }
+
+    public static<E extends Comparable<E>> void sort(List<E> list, int start, int end)
+    {
+
+    }
+    */
+}

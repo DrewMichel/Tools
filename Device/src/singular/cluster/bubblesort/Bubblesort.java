@@ -3,10 +3,10 @@ package singular.cluster.bubblesort;
 /**
  * Created by Andrew Michel on 10/9/2017.
  */
-public final class BubbleSort
+public final class Bubblesort
 {
     // Private constructor
-    private BubbleSort() {}
+    private Bubblesort() {}
 
     public static void sort(int[] array)
     {

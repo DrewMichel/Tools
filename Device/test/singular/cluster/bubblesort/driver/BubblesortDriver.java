@@ -1,6 +1,6 @@
 package singular.cluster.bubblesort.driver;
 
-import singular.cluster.bubblesort.BubbleSort;
+import singular.cluster.bubblesort.Bubblesort;
 import singular.colonize.populate.PopulateArray;
 import singular.publish.broadcast.BroadcastArray;
 
@@ -9,7 +9,7 @@ import singular.publish.broadcast.BroadcastArray;
  *
  * This class exits to test bubblesort package classes
  */
-public class BubbleSortDriver
+public class BubblesortDriver
 {
     public static void main(String[] args)
     {
@@ -22,7 +22,7 @@ public class BubbleSortDriver
 
         System.out.println("\n");
 
-        BubbleSort.sort(array);
+        Bubblesort.sort(array);
 
         System.out.println("OUTPUTTING SORTED ARRAY");
         BroadcastArray.broadcast(array);
