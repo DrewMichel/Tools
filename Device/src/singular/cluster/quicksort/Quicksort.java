@@ -96,6 +96,7 @@ public final class Quicksort
 
         E[] tempArray = (E[])(new Comparable[size]);
 
+        //E splitValue = list.get((start + end) / 2);
         E splitValue = list.get(start);
 
         int up = 0, down = size - 1;

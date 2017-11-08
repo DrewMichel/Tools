@@ -45,17 +45,18 @@ public class QuicksortDriver
         System.out.println();
         */
 
-        /*
-        for(int i = 0; i < 1000000; i++)
+
+        // Occasionally overflowing
+        for(int i = 0; i < 10; i++)
         {
-            List<Integer> list = new ArrayList<>();
+            List<Double> list = new ArrayList<>();
 
             PopulateList.populate(list, 20, 100);
 
-            Quicksort.sort(list);
+            Quicksort.<Double>sort(list);
         }
 
-        List<Integer> list = new ArrayList<>();
+        List<Double> list = new ArrayList<>();
 
         PopulateList.populate(list, 20, 100);
 
@@ -65,7 +66,7 @@ public class QuicksortDriver
 
         System.out.println();
         BroadcastList.broadcast(list);
-        */
+
 
     }
 }
