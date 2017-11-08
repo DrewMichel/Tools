@@ -1,8 +1,8 @@
 package singular.cluster.subset.driver;
 
 import singular.cluster.subset.SubsetCombination;
-import singular.colonize.populate.PopulateArrayList;
-import singular.publish.broadcast.BroadcastArrayList;
+import singular.colonize.populate.PopulateList;
+import singular.publish.broadcast.BroadcastList;
 
 import java.util.ArrayList;
 
@@ -14,10 +14,10 @@ public class SubsetCombinationDriver
     {
         ArrayList<Integer> list = new ArrayList<>();
 
-        PopulateArrayList.populate(list, 20, 20, 1);
+        PopulateList.populate(list, 20, 20, 1);
 
         System.out.println("TESTING BROADCAST ARRAYLIST 1D");
-        BroadcastArrayList.broadcast(list);
+        BroadcastList.broadcast(list);
 
         System.out.println();
 
@@ -27,6 +27,6 @@ public class SubsetCombinationDriver
         System.out.println("TESTING BROADCAST ARRAYLIST 2D");
         System.out.println("TESTING SUBSET COMBINATIONS.  SETS SHOULD EQUAL: " + DEFAULT_TARGET);
         System.out.println("NUMBER OF COMBINATIONS: " + combinations.size());
-        BroadcastArrayList.broadcast(combinations, true);
+        BroadcastList.broadcast(combinations, true);
     }
 }

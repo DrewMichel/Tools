@@ -1,13 +1,13 @@
 package singular.colonize.populate;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public final class PopulateArrayList
+public final class PopulateList
 {
     // Private constructor
-    private PopulateArrayList(){}
+    private PopulateList(){}
 
-    public static<E extends Number> void populate(ArrayList<E> list, int size,  int max, int min)
+    public static<E extends Number> void populate(List<E> list, int size,  int max, int min)
     {
         Integer randomValue = 0;
 
@@ -19,7 +19,7 @@ public final class PopulateArrayList
         }
     }
 
-    public static<E extends Number> void populate(ArrayList<E> list, int size, int max)
+    public static<E extends Number> void populate(List<E> list, int size, int max)
     {
         populate(list, size, max, 0);
     }

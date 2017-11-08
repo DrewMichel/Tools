@@ -1,17 +1,17 @@
 package singular.publish.broadcast;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public final class BroadcastArrayList
+public final class BroadcastList
 {
     public static final int DEFAULT_SPACING = 1;
     public static final String DEFAULT_SEPARATOR = ", ";
     public static final boolean DEFAULT_NEWLINE = true;
 
     // Private constructor
-    private BroadcastArrayList(){}
+    private BroadcastList(){}
 
-    public static<E extends Number> void broadcast(ArrayList<E> array, int spacing, String separator)
+    public static<E extends Number> void broadcast(List<E> array, int spacing, String separator)
     {
         System.out.printf("%" + spacing + ".2f", array.get(0).doubleValue());
 
@@ -21,12 +21,12 @@ public final class BroadcastArrayList
         }
     }
 
-    public static<E extends Number> void broadcast(ArrayList<E> array)
+    public static<E extends Number> void broadcast(List<E> array)
     {
         broadcast(array, DEFAULT_SPACING, DEFAULT_SEPARATOR);
     }
 
-    public static<E extends Number> void broadcast(ArrayList<ArrayList<E>> array, int spacing, String separator, boolean newLine)
+    public static <E extends Number, T extends List<E>> void broadcast(List<T> array, int spacing, String separator, boolean newLine)
     {
         for(int i = 0; i < array.size(); i++)
         {
@@ -44,7 +44,7 @@ public final class BroadcastArrayList
         }
     }
 
-    public static<E extends Number> void broadcast(ArrayList<ArrayList<E>> array, boolean newLine)
+    public static<E extends Number, T extends List<E>> void broadcast(List<T> array, boolean newLine)
     {
         broadcast(array, DEFAULT_SPACING, DEFAULT_SEPARATOR, newLine);
     }

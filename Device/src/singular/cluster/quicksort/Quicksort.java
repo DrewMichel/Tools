@@ -1,5 +1,7 @@
 package singular.cluster.quicksort;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -65,15 +67,61 @@ public final class Quicksort
         return (start + up);
     }
 
-    /*
+    // Needs testings
     public static<E extends Comparable<E>> void sort(List<E> list)
     {
         sort(list, 0, list.size() - 1);
     }
 
-    public static<E extends Comparable<E>> void sort(List<E> list, int start, int end)
+    private static<E extends Comparable<E>> void sort(List<E> list, int start, int end)
     {
-
+        if(end - start == 1 && (list.get(start)).compareTo(list.get(end)) > 0)
+        {
+            E temp = list.get(start);
+            list.set(start, list.get(end));
+            list.set(end, temp);
+        }
+        else if(end - start > 1)
+        {
+            int splitPoint = split(list, start, end);
+            sort(list, start, splitPoint);
+            sort(list, splitPoint + 1, end);
+        }
     }
-    */
+
+
+    private static <E extends Comparable<E>> int split(List<E> list, int start, int end)
+    {
+        int size = end - start + 1;
+
+        E[] tempArray = (E[])(new Comparable[size]);
+
+        E splitValue = list.get(start);
+
+        int up = 0, down = size - 1;
+
+        for(int i = start + 1; i <= end; i++)
+        {
+            if(list.get(i).compareTo(splitValue) <= 0)
+            {
+                tempArray[up] = list.get(i);
+                up++;
+            }
+            else
+            {
+                tempArray[down] = list.get(i);
+                down--;
+            }
+        }
+
+        tempArray[up] = list.get(start);
+
+        for(int i = 0; i < size; i++)
+        {
+            list.set(start + i, tempArray[i]);
+        }
+
+        return (start + up);
+    }
+
 }
