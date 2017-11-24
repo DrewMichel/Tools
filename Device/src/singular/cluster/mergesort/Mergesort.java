@@ -1,6 +1,9 @@
 package singular.cluster.mergesort;
 
 import java.io.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.ListIterator;
 
 /**
  * Created by Andrew Michel on 11/22/2017.
@@ -8,6 +11,43 @@ import java.io.*;
 public final class Mergesort
 {
     private Mergesort(){}
+
+    public static <T extends Comparable<T>> void sort(List<T> list)
+    {
+        int size = list.size();
+
+        if(size > 1)
+        {
+            int halfSize = size / 2, iteratorIndex = 0;
+
+            List<T> leftList = new ArrayList<>(halfSize);
+            List<T> rightList = new ArrayList<>(size - halfSize);
+
+            ListIterator<T> leftIterator = leftList.listIterator();
+            ListIterator<T> rightIterator = rightList.listIterator();
+
+            for(T tee : list)
+            {
+                if(tee != null)
+                {
+                    if(iteratorIndex < halfSize)
+                    {
+                        leftIterator.add(tee);
+                        iteratorIndex++;
+                    }
+                    else
+                    {
+                        rightIterator.add(tee);
+                    }
+                }
+            }
+
+            sort(leftList);
+            sort(rightList);
+
+            merge(list, leftList, rightList);
+        }
+    }
 
     public static <T extends Comparable<T>> void sort(T[] table)
     {
@@ -28,11 +68,40 @@ public final class Mergesort
         }
     }
 
+    private static <T extends Comparable<T>> void merge(List<T> outputSequence,
+                                                       List<T> leftSequence,
+                                                       List<T> rightSequence)
+    {
+        int i = 0, j = 0, k = 0, leftSize = leftSequence.size(), rightSize = rightSequence.size();
+
+        while(i < leftSize && j < rightSize)
+        {
+            if(leftSequence.get(i).compareTo(rightSequence.get(j)) < 0)
+            {
+                outputSequence.set(k++, leftSequence.get(i++));
+            }
+            else
+            {
+                outputSequence.set(k++, rightSequence.get(j++));
+            }
+        }
+
+        while(i < leftSize)
+        {
+            outputSequence.set(k++, leftSequence.get(i++));
+        }
+
+        while(j < rightSize)
+        {
+            outputSequence.set(k++, rightSequence.get(j++));
+        }
+    }
+
     private static <T extends Comparable<T>> void merge(T[] outputSequence,
                                                         T[] leftSequence,
                                                         T[] rightSequence)
     {
-        int i = 0, j = 0, k  = 0;
+        int i = 0, j = 0, k = 0;
 
         while(i < leftSequence.length && j < rightSequence.length)
         {
@@ -51,7 +120,7 @@ public final class Mergesort
             outputSequence[k++] = leftSequence[i++];
         }
 
-        while(k < rightSequence.length)
+        while(j < rightSequence.length)
         {
             outputSequence[k++] = rightSequence[j++];
         }
@@ -316,7 +385,22 @@ public final class Mergesort
 
     public static <T extends Comparable<T>> void filesort(File path)
     {
+        T[] arrayOne = null;
+        T[] arrayTwo = null;
+        T[] combined = null;
 
+        ObjectInputStream originalInput = null;
+        ObjectInputStream tempInputOne = null;
+        ObjectInputStream tempInputTwo = null;
+
+        ObjectOutputStream originalOutput = null;
+        ObjectOutputStream tempOutputOne = null;
+        ObjectOutputStream tempOutputTwo = null;
+
+        int firstIterator = 0, secondIterator = 0, combinedIterator = 0, runSize = 10, fileSize = 0;
+        boolean driving = true, reading = true, firstDistribution = true, originalReader = true, copyReader = true;
+
+        // implementation
     }
 
     public static <T extends Comparable<T>> void filesort(String path)
