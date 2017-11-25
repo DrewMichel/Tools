@@ -386,9 +386,6 @@ public final class Mergesort
     public static <T extends Comparable<T>> void filesort(File path)
     {
         // Declarations
-        // Unnecessary?
-        ArrayList<T> combined = null;
-
         ObjectInputStream originalInput = null;
         ObjectInputStream tempInputOne = null;
         ObjectInputStream tempInputTwo = null;
@@ -397,17 +394,18 @@ public final class Mergesort
         ObjectOutputStream tempOutputOne = null;
         ObjectOutputStream tempOutputTwo = null;
 
-        int firstIterator = 0, secondIterator = 0, combinedIterator = 0, runSize = 10, fileSize = 0, doubledRunSize = 0;
+        int firstIterator = 0, secondIterator = 0, combinedIterator = 0,
+                runSize = 10, fileSize = 0, doubledRunSize = 0;
         boolean driving = true, reading = true, firstDistribution = true,
-                originalReader = true, copyReader = true, writing = true,
-                firstOngoing = true, secondOngoing = true;
+                writing = true,
+                firstOngoing = true, secondOngoing = true, innerWriting = true;
 
         ArrayList<T> arrayOne = new ArrayList<>(runSize);
         ArrayList<T> arrayTwo = new ArrayList<>(runSize);
 
         T currentOne = null, currentTwo = null;
 
-        boolean testing = true;
+        boolean testing = false;
 
         // implementation
 
@@ -596,21 +594,21 @@ public final class Mergesort
 
             while(writing)
             {
+                currentOne = null;
+                currentTwo = null;
+                innerWriting = true;
                 combinedIterator = 0;
                 firstIterator = 0;
                 secondIterator = 0;
-                currentOne = null;
-                currentTwo = null;
 
-                while(writing && combinedIterator < doubledRunSize)
+                while(innerWriting)
                 {
-                    if(currentOne == null && firstOngoing && firstIterator < runSize)
+                    if(currentOne == null && firstIterator < runSize)
                     {
                         try
                         {
-                            currentOne = (T)tempInputOne.readObject();
+                            currentOne = (T) tempInputOne.readObject();
                             firstIterator++;
-                            combinedIterator++;
                         }
                         catch(EOFException e)
                         {
@@ -628,18 +626,13 @@ public final class Mergesort
                             System.exit(0);
                         }
                     }
-                    else if(currentOne == null)
-                    {
-                        firstOngoing = false;
-                    }
 
-                    if(currentTwo == null && secondOngoing && secondIterator < runSize)
+                    if(currentTwo == null && secondIterator < runSize)
                     {
                         try
                         {
-                            currentTwo = (T)tempInputTwo.readObject();
+                            currentTwo = (T) tempInputTwo.readObject();
                             secondIterator++;
-                            combinedIterator++;
                         }
                         catch(EOFException e)
                         {
@@ -657,10 +650,6 @@ public final class Mergesort
                             System.exit(0);
                         }
                     }
-                    else if(currentTwo == null)
-                    {
-                        secondOngoing = false;
-                    }
 
                     try
                     {
@@ -670,22 +659,31 @@ public final class Mergesort
                             {
                                 originalOutput.writeObject(currentOne);
                                 currentOne = null;
+                                combinedIterator++;
                             }
                             else
                             {
                                 originalOutput.writeObject(currentTwo);
                                 currentTwo = null;
+                                combinedIterator++;
                             }
                         }
                         else if(currentOne != null)
                         {
                             originalOutput.writeObject(currentOne);
                             currentOne = null;
+                            combinedIterator++;
                         }
                         else if(currentTwo != null)
                         {
                             originalOutput.writeObject(currentTwo);
                             currentTwo = null;
+                            combinedIterator++;
+                        }
+                        else
+                        {
+                            firstOngoing = false;
+                            secondOngoing = false;
                         }
                     }
                     catch(IOException e)
@@ -694,7 +692,7 @@ public final class Mergesort
                         System.exit(0);
                     }
 
-                    writing = firstOngoing || secondOngoing;
+                    innerWriting = (firstOngoing || secondOngoing) && combinedIterator < doubledRunSize;
 
                     if(testing)
                     {

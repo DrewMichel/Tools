@@ -17,7 +17,7 @@ public class MergesortDriver
     {
         ArrayList<Integer> list = new ArrayList<>();
 
-        for(int i = 0; i < 30; i++)
+        for(int i = 0; i < 49; i++)
         {
             list.add((int) (Math.random() * 1000 + 1));
         }
@@ -83,8 +83,11 @@ public class MergesortDriver
 
         Mergesort.closeStream(inputStream);
 
-        for(int i = 0; i < out.size(); i++)
+        Integer previous = out.get(0);
+
+        for(int i = 1; i < out.size(); i++)
         {
+            assert out.get(i) >= previous;
             System.out.print(out.get(i) + " ");
         }
         System.out.println("\nORIGINAL SIZE: " + list.size());
