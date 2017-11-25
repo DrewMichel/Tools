@@ -38,7 +38,7 @@ public class FixedStack<E> implements StackTemplate<E>
      */
     public FixedStack(FixedStack copy)
     {
-        stack = (E[]) new Object[copy.top];
+        stack = (E[]) new Object[copy.stack.length];
         System.arraycopy(copy.stack, 0, stack, 0, copy.top);
         top = copy.top;
     }

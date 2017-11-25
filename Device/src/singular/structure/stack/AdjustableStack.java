@@ -38,7 +38,7 @@ public class AdjustableStack<E> implements StackTemplate<E>
      */
     public AdjustableStack(AdjustableStack copy)
     {
-        stack = (E[]) new Object[copy.top];
+        stack = (E[]) new Object[copy.stack.length];
         System.arraycopy(copy.stack, 0, stack, 0, copy.top);
         top = copy.top;
     }
