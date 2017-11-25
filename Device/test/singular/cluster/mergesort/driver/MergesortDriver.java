@@ -16,14 +16,15 @@ public class MergesortDriver
     public static void main(String[] args)
     {
         ArrayList<Integer> list = new ArrayList<>();
+        double startTime = 0, finishTime = 0;
 
-        for(int i = 0; i < 49; i++)
+        for(int i = 0; i < 100000; i++)
         {
             list.add((int) (Math.random() * 1000 + 1));
         }
 
         System.out.println("PRE SORT LIST");
-        BroadcastList.broadcast(list);
+        //BroadcastList.broadcast(list);
         System.out.println();
 
         File path = new File("data.txt");
@@ -50,8 +51,11 @@ public class MergesortDriver
         }
 
         Mergesort.closeStream(outputStream);
-
+        startTime = System.nanoTime();
         Mergesort.filesort(path);
+        finishTime = (System.nanoTime() - startTime) / NANOSECONDS_IN_SECOND;
+
+        System.out.printf("%.0f HOURS %.10f SECONDS%n", finishTime / 60, finishTime % 60);
 
         boolean reading = true;
 

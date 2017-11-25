@@ -12,6 +12,11 @@ public final class Mergesort
 {
     private Mergesort(){}
 
+    /**
+     * Mergesort method that accepts a List of a type that implements Comparable
+     * @param list to be sorted
+     * @param <T> generic that bounds to Comparable
+     */
     public static <T extends Comparable<T>> void sort(List<T> list)
     {
         int size = list.size();
@@ -49,6 +54,11 @@ public final class Mergesort
         }
     }
 
+    /**
+     * Mergesort method that accepts an array of a type that implements Comparable
+     * @param table to be sorted
+     * @param <T> generic that bounds to Comparable
+     */
     public static <T extends Comparable<T>> void sort(T[] table)
     {
         if(table.length > 1)
@@ -68,6 +78,13 @@ public final class Mergesort
         }
     }
 
+    /**
+     * Merge method that merges the left and right sequences into the output sequence
+     * @param outputSequence list that receives the left and right sequence elements
+     * @param leftSequence list that is merged into the output sequence
+     * @param rightSequence list that is merged into the output sequence
+     * @param <T> generic that bounds to Comparable
+     */
     private static <T extends Comparable<T>> void merge(List<T> outputSequence,
                                                        List<T> leftSequence,
                                                        List<T> rightSequence)
@@ -97,6 +114,13 @@ public final class Mergesort
         }
     }
 
+    /**
+     * Merge method that merges the left and right sequences into the output sequence
+     * @param outputSequence array that receives the left and right sequence elements
+     * @param leftSequence array that is merged into the output sequence
+     * @param rightSequence array that is merged into the output sequence
+     * @param <T> generic that bounds to Comparable
+     */
     private static <T extends Comparable<T>> void merge(T[] outputSequence,
                                                         T[] leftSequence,
                                                         T[] rightSequence)
@@ -126,263 +150,11 @@ public final class Mergesort
         }
     }
 
-    /*
-    public static <T extends Comparable<T>> void filesort(File path)
-    {
-        T[] arrayOne = null;
-        T[] arrayTwo = null;
-        T[] combined = null;
-
-        ObjectInputStream originalInput = null;
-        ObjectInputStream tempInputOne = null;
-        ObjectInputStream tempInputTwo = null;
-
-        ObjectOutputStream originalOutput = null;
-        ObjectOutputStream tempOutputOne = null;
-        ObjectOutputStream tempOutputTwo = null;
-
-        int firstIterator = 0, secondIterator = 0, combinedIterator = 0, runSize = 10, fileSize = 0;
-        boolean driving = true, reading = true, firstDistribution = true, rereading = true;
-
-        do
-        {
-            try
-            {
-                originalInput = new ObjectInputStream(new FileInputStream(path));
-
-                tempOutputOne = new ObjectOutputStream(new FileOutputStream(path.getName() + "1"));
-                tempOutputTwo = new ObjectOutputStream(new FileOutputStream(path.getName() + "2"));
-
-                while(reading)
-                {
-                    if(firstDistribution)
-                    {
-                        arrayOne = (T[]) new Comparable[runSize];
-                        arrayTwo = (T[]) new Comparable[runSize];
-
-                        firstIterator = 0;
-                        secondIterator = 0;
-
-                        while(firstIterator < runSize)
-                        {
-                            arrayOne[firstIterator] = (T) originalInput.readObject();
-                            firstIterator++;
-                            fileSize++;
-                        }
-
-                        while(secondIterator < runSize)
-                        {
-                            arrayTwo[secondIterator] = (T) originalInput.readObject();
-                            secondIterator++;
-                            fileSize++;
-                        }
-
-                        sort(arrayOne);
-                        sort(arrayTwo);
-
-                        for(int i = 0; i < arrayTwo.length; i++)
-                        {
-                            tempOutputOne.writeObject(arrayOne[i]);
-                            tempOutputTwo.writeObject(arrayTwo[i]);
-                        }
-
-                        //offset1 += runSize;
-                        //offset2 += runSize;
-                    }
-                    else
-                    {
-                        firstIterator = 0;
-                        secondIterator = 0;
-
-                        while(firstIterator < runSize)
-                        {
-                            tempOutputOne.writeObject(originalInput.readObject());
-                            firstIterator++;
-                        }
-
-                        while(secondIterator < runSize)
-                        {
-                            tempOutputTwo.writeObject(originalInput.readObject());
-                            secondIterator++;
-                        }
-                    }
-                }
-            }
-            catch(EOFException e)
-            {
-                if(firstDistribution)
-                {
-                    firstDistribution = false;
-
-                    // empty arrays into temp files
-                    T[] tempOne = (T[]) new Comparable[firstIterator];
-                    T[] tempTwo = (T[]) new Comparable[secondIterator];
-
-                    for(int i = 0; i < tempOne.length; i++)
-                    {
-                        tempOne[i] = arrayOne[i];
-                    }
-
-                    for(int i = 0; i < tempTwo.length; i++)
-                    {
-                        tempTwo[i] = arrayTwo[i];
-                    }
-
-                    sort(tempOne);
-                    sort(tempTwo);
-
-                    try
-                    {
-                        for(int i = 0; i < tempOne.length; i++)
-                        {
-                            tempOutputOne.writeObject(tempOne[i]);
-                        }
-
-                        for(int i = 0; i < tempTwo.length; i++)
-                        {
-                            tempOutputTwo.writeObject(tempTwo[i]);
-                        }
-                    }
-                    catch(IOException ex)
-                    {
-                        e.printStackTrace();
-                        ex.printStackTrace();
-                    }
-                }
-
-                try
-                {
-                    if(originalInput != null)
-                    {
-                        originalInput.close();
-                    }
-
-                    if(tempOutputOne != null)
-                    {
-                        tempOutputOne.close();
-                    }
-
-                    if(tempOutputTwo != null)
-                    {
-                        tempOutputTwo.close();
-                    }
-                }
-                catch(IOException ex)
-                {
-                    e.printStackTrace();
-                    ex.printStackTrace();
-                }
-            }
-            catch(FileNotFoundException e)
-            {
-                e.printStackTrace();
-                driving = false;
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-                driving = false;
-            }
-            catch(ClassCastException e)
-            {
-                e.printStackTrace();
-                driving = false;
-            }
-            catch(ClassNotFoundException e)
-            {
-                e.printStackTrace();
-                driving = false;
-            }
-
-            if(driving)
-            {
-                try
-                {
-                    originalOutput = new ObjectOutputStream(new FileOutputStream(path));
-                    tempInputOne = new ObjectInputStream(new FileInputStream(path.getName() + "1"));
-                    tempInputTwo = new ObjectInputStream(new FileInputStream(path.getName() + "2"));
-
-                    // interweave runs or chunk them?
-
-                    while(rereading)
-                    {
-                        combined = (T[]) new Comparable[runSize * 2];
-
-                        firstIterator = 0;
-                        secondIterator = 0;
-                        combinedIterator = 0;
-
-                        while(firstIterator < runSize)
-                        {
-                            combined[firstIterator] = (T) tempInputOne.readObject();
-                            firstIterator++;
-                            combinedIterator++;
-                        }
-
-                        while(secondIterator < runSize)
-                        {
-                            combined[firstIterator + secondIterator] = (T) tempInputOne.readObject();
-                            secondIterator++;
-                            combinedIterator++;
-                        }
-
-                        sort(combined);
-
-                        for(int i = 0; i < combined.length; i++)
-                        {
-                            originalOutput.writeObject(combined[i]);
-                        }
-                    }
-                }
-                catch(EOFException e)
-                {
-                    T[] temp = (T[]) new Comparable[combinedIterator];
-
-                    for(int i = 0; i < temp.length; i++)
-                    {
-                        temp[i] = combined[i];
-                    }
-
-                    sort(temp);
-
-                    try
-                    {
-                        for(int i = 0; i < temp.length; i++)
-                        {
-                            originalOutput.writeObject(temp[i]);
-                        }
-
-                    }
-                    catch(IOException ex)
-                    {
-                        e.printStackTrace();
-                        ex.printStackTrace();
-                    }
-                }
-                catch(IOException e)
-                {
-                    e.printStackTrace();
-                    driving = false;
-                }
-                catch(ClassCastException e)
-                {
-                    e.printStackTrace();
-                    driving = false;
-                }
-                catch(ClassNotFoundException e)
-                {
-                    e.printStackTrace();
-                    driving = false;
-                }
-            }
-
-            // set to 5 before and move to the top of the loop?
-            runSize *= 2;
-
-        }while(driving && runSize < fileSize);
-    }
-    */
-
+    /**
+     * Mergesort method that operates on a file filled with a type of object that implements Comparable
+     * @param path file that contains the original data and is overwritten with the sorted data
+     * @param <T> generic that bounds to Comparable
+     */
     public static <T extends Comparable<T>> void filesort(File path)
     {
         // Declarations
@@ -397,24 +169,18 @@ public final class Mergesort
         int firstIterator = 0, secondIterator = 0, combinedIterator = 0,
                 runSize = 10, fileSize = 0, doubledRunSize = 0;
         boolean driving = true, reading = true, firstDistribution = true,
-                writing = true,
-                firstOngoing = true, secondOngoing = true, innerWriting = true;
+                writing = true, firstOngoing = true, secondOngoing = true,
+                innerWriting = true;
 
         ArrayList<T> arrayOne = new ArrayList<>(runSize);
         ArrayList<T> arrayTwo = new ArrayList<>(runSize);
 
         T currentOne = null, currentTwo = null;
 
-        boolean testing = false;
-
         // implementation
-
-        // runSize = 5;
 
         do
         {
-            // runSize *= 2;
-
             try
             {
                 originalInput = new ObjectInputStream(new FileInputStream(path));
@@ -558,11 +324,6 @@ public final class Mergesort
                     e.printStackTrace();
                     System.exit(0);
                 }
-
-                if(testing)
-                {
-                    System.out.println("END OF READING");
-                }
             } // end of reading
 
             firstDistribution = false;
@@ -693,19 +454,9 @@ public final class Mergesort
                     }
 
                     innerWriting = (firstOngoing || secondOngoing) && combinedIterator < doubledRunSize;
-
-                    if(testing)
-                    {
-                        System.out.println("END OF INNER WRITING");
-                    }
                 }
 
                 writing = firstOngoing || secondOngoing;
-
-                if(testing)
-                {
-                    System.out.println("END OF WRITING");
-                }
             }
 
             closeStream(originalOutput);
@@ -713,26 +464,25 @@ public final class Mergesort
             closeStream(tempInputTwo);
 
             runSize *= 2;
-
-            if(testing)
-            {
-                System.out.println("END OF DRIVING");
-                System.out.println("FILE SIZE: " + fileSize);
-                System.out.println("RUN SIZE : " + runSize);
-            }
-
-
         } while(driving && runSize <= fileSize);// end of driving
-        // while(driving && runSize < fileSize);
     }
 
-
-
+    /**
+     * Mergesort method that operates on a file filled with a type of object that implements Comparable
+     * @param path file that contains the original data and is overwritten with the sorted data
+     * @param <T> generic that bounds to Comparable
+     */
     public static <T extends Comparable<T>> void filesort(String path)
     {
         filesort(new File(path));
     }
 
+    /**
+     * Calls the stream's close method.
+     * Could be moved to another package at a later date.
+     * @param stream to be closed
+     * @return true if the stream is closed or false if the stream could not be closed
+     */
     public static boolean closeStream(Closeable stream)
     {
         try
