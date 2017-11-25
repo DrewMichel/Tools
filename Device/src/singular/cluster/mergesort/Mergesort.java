@@ -385,9 +385,9 @@ public final class Mergesort
 
     public static <T extends Comparable<T>> void filesort(File path)
     {
-        T[] arrayOne = null;
-        T[] arrayTwo = null;
-        T[] combined = null;
+        // Declarations
+        // Unnecessary?
+        ArrayList<T> combined = null;
 
         ObjectInputStream originalInput = null;
         ObjectInputStream tempInputOne = null;
@@ -397,14 +397,358 @@ public final class Mergesort
         ObjectOutputStream tempOutputOne = null;
         ObjectOutputStream tempOutputTwo = null;
 
-        int firstIterator = 0, secondIterator = 0, combinedIterator = 0, runSize = 10, fileSize = 0;
-        boolean driving = true, reading = true, firstDistribution = true, originalReader = true, copyReader = true;
+        int firstIterator = 0, secondIterator = 0, combinedIterator = 0, runSize = 10, fileSize = 0, doubledRunSize = 0;
+        boolean driving = true, reading = true, firstDistribution = true,
+                originalReader = true, copyReader = true, writing = true,
+                firstOngoing = true, secondOngoing = true;
+
+        ArrayList<T> arrayOne = new ArrayList<>(runSize);
+        ArrayList<T> arrayTwo = new ArrayList<>(runSize);
+
+        T currentOne = null, currentTwo = null;
+
+        boolean testing = true;
 
         // implementation
+
+        // runSize = 5;
+
+        do
+        {
+            // runSize *= 2;
+
+            try
+            {
+                originalInput = new ObjectInputStream(new FileInputStream(path));
+
+                tempOutputOne = new ObjectOutputStream(new FileOutputStream(path.getName() + "1"));
+                tempOutputTwo = new ObjectOutputStream(new FileOutputStream(path.getName() + "2"));
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+                System.exit(0);
+            }
+
+            reading = true;
+
+            while(reading)
+            {
+                firstIterator = 0;
+                secondIterator = 0;
+
+                try
+                {
+                    if(firstDistribution)
+                    {
+                        arrayOne.clear();
+
+                        try
+                        {
+                            while(firstIterator < runSize)
+                            {
+                                arrayOne.add((T)originalInput.readObject());
+                                firstIterator++;
+                                fileSize++;
+                            }
+                        }
+                        catch(EOFException ex)
+                        {
+                            reading = false;
+                        }
+
+                        sort(arrayOne);
+
+                        for(T tee : arrayOne)
+                        {
+                            if(tee != null)
+                            {
+                                tempOutputOne.writeObject(tee);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // write into temp one
+                        try
+                        {
+                            while(firstIterator < runSize)
+                            {
+                                tempOutputOne.writeObject(originalInput.readObject());
+                                firstIterator++;
+                            }
+                        }
+                        catch(EOFException e)
+                        {
+                            reading = false;
+                        }
+                    }
+
+                }
+                catch (EOFException e)
+                {
+                    reading = false;
+                }
+                catch(ClassNotFoundException e)
+                {
+                    e.printStackTrace();
+                    System.exit(0);
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                    System.exit(0);
+                }
+
+                try
+                {
+                    if(firstDistribution)
+                    {
+                        arrayTwo.clear();
+
+                        try
+                        {
+                            while(secondIterator < runSize)
+                            {
+                                arrayTwo.add((T)originalInput.readObject());
+                                secondIterator++;
+                                fileSize++;
+                            }
+                        }
+                        catch(EOFException ex)
+                        {
+                            reading = false;
+                        }
+
+                        sort(arrayTwo);
+
+                        for(T tee : arrayTwo)
+                        {
+                            if(tee != null)
+                            {
+                                tempOutputTwo.writeObject(tee);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            while(secondIterator < runSize)
+                            {
+                                tempOutputTwo.writeObject(originalInput.readObject());
+                                secondIterator++;
+                            }
+                        }
+                        catch(EOFException e)
+                        {
+                            reading = false;
+                        }
+                    }
+                }
+                catch (EOFException e)
+                {
+                    reading = false;
+                }
+                catch(ClassNotFoundException e)
+                {
+                    e.printStackTrace();
+                    System.exit(0);
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                    System.exit(0);
+                }
+
+                if(testing)
+                {
+                    System.out.println("END OF READING");
+                }
+            } // end of reading
+
+            firstDistribution = false;
+            closeStream(originalInput);
+            closeStream(tempOutputOne);
+            closeStream(tempOutputTwo);
+
+            // writing to original
+
+            // open streams
+            try
+            {
+                originalOutput = new ObjectOutputStream(new FileOutputStream(path));
+
+                tempInputOne = new ObjectInputStream(new FileInputStream(path.getName() + "1"));
+                tempInputTwo = new ObjectInputStream(new FileInputStream(path.getName() + "2"));
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+                System.exit(0);
+            }
+
+            writing = true;
+
+            doubledRunSize = runSize * 2;
+            firstOngoing = true;
+            secondOngoing = true;
+
+            while(writing)
+            {
+                combinedIterator = 0;
+                firstIterator = 0;
+                secondIterator = 0;
+                currentOne = null;
+                currentTwo = null;
+
+                while(writing && combinedIterator < doubledRunSize)
+                {
+                    if(currentOne == null && firstOngoing && firstIterator < runSize)
+                    {
+                        try
+                        {
+                            currentOne = (T)tempInputOne.readObject();
+                            firstIterator++;
+                            combinedIterator++;
+                        }
+                        catch(EOFException e)
+                        {
+                            currentOne = null;
+                            firstOngoing = false;
+                        }
+                        catch(ClassNotFoundException e)
+                        {
+                            e.printStackTrace();
+                            System.exit(0);
+                        }
+                        catch(IOException e)
+                        {
+                            e.printStackTrace();
+                            System.exit(0);
+                        }
+                    }
+                    else if(currentOne == null)
+                    {
+                        firstOngoing = false;
+                    }
+
+                    if(currentTwo == null && secondOngoing && secondIterator < runSize)
+                    {
+                        try
+                        {
+                            currentTwo = (T)tempInputTwo.readObject();
+                            secondIterator++;
+                            combinedIterator++;
+                        }
+                        catch(EOFException e)
+                        {
+                            currentTwo = null;
+                            secondOngoing = false;
+                        }
+                        catch(ClassNotFoundException e)
+                        {
+                            e.printStackTrace();
+                            System.exit(0);
+                        }
+                        catch(IOException e)
+                        {
+                            e.printStackTrace();
+                            System.exit(0);
+                        }
+                    }
+                    else if(currentTwo == null)
+                    {
+                        secondOngoing = false;
+                    }
+
+                    try
+                    {
+                        if(currentOne != null && currentTwo != null)
+                        {
+                            if(currentOne.compareTo(currentTwo) < 0)
+                            {
+                                originalOutput.writeObject(currentOne);
+                                currentOne = null;
+                            }
+                            else
+                            {
+                                originalOutput.writeObject(currentTwo);
+                                currentTwo = null;
+                            }
+                        }
+                        else if(currentOne != null)
+                        {
+                            originalOutput.writeObject(currentOne);
+                            currentOne = null;
+                        }
+                        else if(currentTwo != null)
+                        {
+                            originalOutput.writeObject(currentTwo);
+                            currentTwo = null;
+                        }
+                    }
+                    catch(IOException e)
+                    {
+                        e.printStackTrace();
+                        System.exit(0);
+                    }
+
+                    writing = firstOngoing || secondOngoing;
+
+                    if(testing)
+                    {
+                        System.out.println("END OF INNER WRITING");
+                    }
+                }
+
+                writing = firstOngoing || secondOngoing;
+
+                if(testing)
+                {
+                    System.out.println("END OF WRITING");
+                }
+            }
+
+            closeStream(originalOutput);
+            closeStream(tempInputOne);
+            closeStream(tempInputTwo);
+
+            runSize *= 2;
+
+            if(testing)
+            {
+                System.out.println("END OF DRIVING");
+                System.out.println("FILE SIZE: " + fileSize);
+                System.out.println("RUN SIZE : " + runSize);
+            }
+
+
+        } while(driving && runSize <= fileSize);// end of driving
+        // while(driving && runSize < fileSize);
     }
+
+
 
     public static <T extends Comparable<T>> void filesort(String path)
     {
         filesort(new File(path));
+    }
+
+    public static boolean closeStream(Closeable stream)
+    {
+        try
+        {
+            if(stream != null)
+            {
+                stream.close();
+            }
+
+            return true;
+        }
+        catch(IOException e)
+        {
+            return false;
+        }
     }
 }

@@ -3,6 +3,7 @@ package singular.cluster.mergesort.driver;
 import singular.cluster.mergesort.Mergesort;
 import singular.publish.broadcast.BroadcastList;
 
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -14,6 +15,81 @@ public class MergesortDriver
 
     public static void main(String[] args)
     {
+        ArrayList<Integer> list = new ArrayList<>();
+
+        for(int i = 0; i < 30; i++)
+        {
+            list.add((int) (Math.random() * 1000 + 1));
+        }
+
+        System.out.println("PRE SORT LIST");
+        BroadcastList.broadcast(list);
+        System.out.println();
+
+        File path = new File("data.txt");
+
+        ObjectOutputStream outputStream = null;
+        ObjectInputStream inputStream = null;
+
+        try
+        {
+            outputStream = new ObjectOutputStream(new FileOutputStream(path));
+
+            for(Integer i : list)
+            {
+                outputStream.writeObject(i);
+            }
+        }
+        catch(FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        Mergesort.closeStream(outputStream);
+
+        Mergesort.filesort(path);
+
+        boolean reading = true;
+
+        System.out.println("POST SORT FILE");
+
+        ArrayList<Integer> out = new ArrayList<>();
+
+        try
+        {
+            inputStream = new ObjectInputStream(new FileInputStream(path));
+
+            while(reading)
+            {
+                out.add((Integer)inputStream.readObject());
+            }
+        }
+        catch(EOFException e)
+        {
+            System.out.println("\nREACHED END OF FILE");
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        catch(ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        Mergesort.closeStream(inputStream);
+
+        for(int i = 0; i < out.size(); i++)
+        {
+            System.out.print(out.get(i) + " ");
+        }
+        System.out.println("\nORIGINAL SIZE: " + list.size());
+        System.out.println("OUTPUT SIZE  : " + out.size());
+
         /*
         Integer[] array = new Integer[30];
         double startTime = 0, finishTime = 0;
@@ -49,6 +125,7 @@ public class MergesortDriver
         System.out.println("\nEXIT");
         */
 
+        /*
         ArrayList<Integer> list = new ArrayList<>();
 
         for(int i = 0; i < 30; i++)
@@ -63,6 +140,6 @@ public class MergesortDriver
 
         BroadcastList.broadcast(list);
         System.out.println();
-
+        */
     }
 }
