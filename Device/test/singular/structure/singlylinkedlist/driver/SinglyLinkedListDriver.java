@@ -22,7 +22,7 @@ public class SinglyLinkedListDriver
             singlyLinkedList.add(i);
         }
 
-        for(int i = 0; i < TEST_VALUE; i++)
+        for(int i = 0; i < singlyLinkedList.size(); i++)
         {
             System.out.printf("%4s -> ", singlyLinkedList.get(i).toString());
         }
@@ -30,12 +30,26 @@ public class SinglyLinkedListDriver
         System.out.println("\n");
 
         System.out.println("TESTING SET INDEX METHOD");
-        for(int i = 0; i < TEST_VALUE; i++)
+        for(int i = 0; i < singlyLinkedList.size(); i++)
         {
-            singlyLinkedList.set(i, -i - 1);
+            System.out.print(singlyLinkedList.set(i, -i) + " ");
         }
 
-        for(int i = 0; i < TEST_VALUE; i++)
+        System.out.println("\nDELETING");
+        while(singlyLinkedList.size() > 0)
+        {
+            System.out.print(singlyLinkedList.remove(0) + " ");
+        }
+
+        /*
+        System.out.println("\nDELETING");
+        for(int i = singlyLinkedList.size() - 1; i>= 0; i--)
+        {
+             System.out.print(singlyLinkedList.remove(i) + " ");
+        }
+        */
+
+        for(int i = 0; i < singlyLinkedList.size(); i++)
         {
             System.out.printf("%4s -> ", singlyLinkedList.get(i).toString());
         }

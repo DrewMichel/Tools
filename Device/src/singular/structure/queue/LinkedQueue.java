@@ -10,7 +10,7 @@ import java.util.Queue;
 public class LinkedQueue<E> implements Queue<E>
 {
     // TODO: NEEDS IMPLEMENTATION
-    
+
     @Override
     public int size() {
         return 0;
