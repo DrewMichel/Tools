@@ -161,8 +161,6 @@ public class FixedStack<E> implements StackTemplate<E>
 
     /**
      * Returns the capacity of the array used as the stack
-     * Since the capacity of the stack can increase as elements are inserted,
-     * it is not recommended to use this method as a conditional while inserting
      * @return the underlying stack's length
      */
     @Override
