@@ -1,9 +1,6 @@
 package singular.structure.singlylinkedlist;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * Created by Andrew Michel on 10/9/2017.
@@ -62,7 +59,7 @@ public class SinglyLinkedList<E> implements List<E>
     @Override
     public Iterator<E> iterator()
     {
-        return new InnerListIterator<>();
+        return new InnerListIterator();
     }
 
     @Override
@@ -167,8 +164,19 @@ public class SinglyLinkedList<E> implements List<E>
     }
 
     @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
+    public boolean containsAll(Collection<?> c)
+    {
+        Iterator iterator = c.iterator();
+
+        while(iterator.hasNext())
+        {
+            if(!contains(iterator.next()))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -339,13 +347,13 @@ public class SinglyLinkedList<E> implements List<E>
     @Override
     public ListIterator<E> listIterator()
     {
-        return new InnerListIterator<>();
+        return new InnerListIterator();
     }
 
     @Override
     public ListIterator<E> listIterator(int index)
     {
-        return new InnerListIterator<>(index);
+        return new InnerListIterator(index);
     }
 
     @Override
@@ -365,29 +373,44 @@ public class SinglyLinkedList<E> implements List<E>
         }
     }
 
-    private class InnerListIterator<T> implements ListIterator<T>
+    private class InnerListIterator implements ListIterator<E>
     {
+        private Node<E> lastItemReturned;
+        private Node<E> next;
 
+        private int index;
 
         public InnerListIterator()
         {
-
+            lastItemReturned =  head;
+            next = null;
         }
 
-        public InnerListIterator(int index)
+        public InnerListIterator(int index) throws IndexOutOfBoundsException
         {
+            if(index < 0 || index > size())
+            {
+                throw new IndexOutOfBoundsException("" + index);
+            }
+
 
         }
 
         @Override
         public boolean hasNext()
         {
-            return false;
+
+            return true;
         }
 
         @Override
-        public T next()
+        public E next() throws NoSuchElementException
         {
+            if(!hasNext())
+            {
+                throw new NoSuchElementException();
+            }
+
             return null;
         }
 
@@ -398,7 +421,7 @@ public class SinglyLinkedList<E> implements List<E>
         }
 
         @Override
-        public T previous()
+        public E previous()
         {
             return null;
         }
@@ -422,13 +445,13 @@ public class SinglyLinkedList<E> implements List<E>
         }
 
         @Override
-        public void set(T t)
+        public void set(E e)
         {
 
         }
 
         @Override
-        public void add(T t)
+        public void add(E e)
         {
 
         }
