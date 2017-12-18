@@ -1,11 +1,11 @@
 package singular.structure.binarytree;
 
+import singular.structure.tree.TreeTemplate;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Created by Andrew Michel on 10/10/2017.
@@ -14,7 +14,7 @@ import java.util.Stack;
  * Data Structures: Abstraction and Design using Java
  * Second edition
  */
-public class BinaryTree<E> implements Serializable, Iterable<E>
+public class BinaryTree<E> implements TreeTemplate<E>, Serializable, Iterable<E>
 {
     protected Stack<Node<E>> stack = new Stack<>();
 
@@ -146,6 +146,66 @@ public class BinaryTree<E> implements Serializable, Iterable<E>
     public Iterator iterator()
     {
         return new BinaryTreeIterator();
+    }
+
+    @Override
+    public List<E> inorderTraversal()
+    {
+        ArrayList<E> list = new ArrayList<>();
+
+        inorderTraverse(list, root);
+
+        return list;
+    }
+
+    private void inorderTraverse(List<E> list, Node<E> localRoot)
+    {
+        if(localRoot != null)
+        {
+            inorderTraverse(list, localRoot.left);
+            list.add(localRoot.data);
+            inorderTraverse(list, localRoot.right);
+        }
+    }
+
+    @Override
+    public List<E> preorderTraversal()
+    {
+        ArrayList<E> list = new ArrayList<>();
+
+        preorderTraverse(list, root);
+
+        return list;
+    }
+
+    private void preorderTraverse(List<E> list, Node<E> localRoot)
+    {
+        if(localRoot != null)
+        {
+            list.add(localRoot.data);
+            preorderTraverse(list, localRoot.left);
+            preorderTraverse(list, localRoot.right);
+        }
+    }
+
+    @Override
+    public List<E> postorderTraversal()
+    {
+        ArrayList<E> list = new ArrayList<>();
+
+        postorderTraverse(list, root);
+
+        return list;
+    }
+
+    private void postorderTraverse(List<E> list, Node<E> localRoot)
+    {
+        if(localRoot != null)
+        {
+            postorderTraverse(list, localRoot.left);
+            postorderTraverse(list, localRoot.right);
+            list.add(localRoot.data);
+        }
     }
 
     private class BinaryTreeIterator implements Iterator<Node<E>>
