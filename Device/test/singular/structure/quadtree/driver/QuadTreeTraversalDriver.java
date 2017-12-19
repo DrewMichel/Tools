@@ -35,10 +35,10 @@ public class QuadTreeTraversalDriver
 
         System.out.println("\n\n DISPLAYING PREORDER LIST");
         System.out.println(tree);
-//        for(ComparablePoint cp : preorderList)
-//        {
-//            System.out.print(cp + " ");
-//        }
+        for(ComparablePoint cp : preorderList)
+        {
+            System.out.print(cp + " ");
+        }
 
         System.out.println("\n\nDISPLAYING INORDER LIST");
         for(ComparablePoint cp : inorderList)
@@ -48,5 +48,27 @@ public class QuadTreeTraversalDriver
 
         System.out.println("\n\nCOUNT NUMBER: " + count);
         System.out.println("LIST SIZE: " + inorderList.size());
+
+        System.out.println("\n\nTREE SIZE: " + tree.size());
+        System.out.println("\nREMOVING FROM TREE");
+        for(int i = 0; i < preorderList.size() / 2; i++)
+        {
+            System.out.print(preorderList.get(i) + " ");
+            System.out.print(tree.remove(preorderList.get(i)) + " ");
+        }
+
+
+//        inorderList = tree.inorderTraversal();
+//
+//        System.out.println("\n\nDISPLAYING INORDER LIST");
+//        for(ComparablePoint cp : inorderList)
+//        {
+//            System.out.print(cp + " " + tree.contains(cp) + " ");
+//        }
+//        System.out.println("\n" + new ComparablePoint(-1,-1) + " " + tree.contains(new ComparablePoint(-1,-1)));
+
+        System.out.println("\n\nCOUNT NUMBER: " + count);
+        System.out.println("LIST SIZE: " + inorderList.size());
+        System.out.println("TREE SIZE: " + tree.size());
     }
 }

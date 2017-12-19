@@ -159,28 +159,31 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>
         if(localRoot == null)
         {
             addSuccessful = true;
+            size++;
             return new QuadNode<>(data);
         }
+
+        int compareResult = localRoot.data.compareTo(data);
 
         // Q3 -1 Q4 -2
         // Q1  2 Q2  1
 
-        if(localRoot.data.compareTo(data) > 1)
+        if(compareResult > 1)
         {
             // Q1
             localRoot.children[QuadNode.OUTER_LEFT_CHILD] = add(localRoot.children[QuadNode.OUTER_LEFT_CHILD], data);
         }
-        else if(localRoot.data.compareTo(data) > 0)
+        else if(compareResult > 0)
         {
             // Q2
             localRoot.children[QuadNode.INNER_LEFT_CHILD] = add(localRoot.children[QuadNode.INNER_LEFT_CHILD], data);
         }
-        else if(localRoot.data.compareTo(data) < -1)
+        else if(compareResult < -1)
         {
             // Q4
             localRoot.children[QuadNode.OUTER_RIGHT_CHILD] = add(localRoot.children[QuadNode.OUTER_RIGHT_CHILD], data);
         }
-        else if(localRoot.data.compareTo(data) < 0)
+        else if(compareResult < 0)
         {
             // Q3
             localRoot.children[QuadNode.INNER_RIGHT_CHILD] = add(localRoot.children[QuadNode.INNER_RIGHT_CHILD], data);
@@ -216,6 +219,111 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>
 //        }
 
         return localRoot;
+    }
+
+
+
+    public E find(E data)
+    {
+        return find(root, data);
+    }
+
+    private E find(QuadNode<E> localRoot, E data)
+    {
+        if(localRoot == null)
+        {
+            return null;
+        }
+
+        int compareResult = localRoot.data.compareTo(data);
+
+        if(compareResult > 1)
+        {
+            return find(localRoot.children[QuadNode.OUTER_LEFT_CHILD], data);
+        }
+        else if(compareResult > 0)
+        {
+            return find(localRoot.children[QuadNode.INNER_LEFT_CHILD], data);
+        }
+        else if(compareResult < -1)
+        {
+            return find(localRoot.children[QuadNode.OUTER_RIGHT_CHILD], data);
+        }
+        else if(compareResult < 0)
+        {
+            return find(localRoot.children[QuadNode.INNER_RIGHT_CHILD], data);
+        }
+        else //if(compareResult == 0)
+        {
+            return localRoot.data;
+        }
+    }
+
+    public boolean contains(E data)
+    {
+        return find(data) != null;
+    }
+
+    public E remove(E data)
+    {
+        dataDeleted = null;
+
+        root = remove(root, data);
+
+        return dataDeleted;
+    }
+
+    private QuadNode<E> remove(QuadNode<E> localRoot, E data)
+    {
+        if(localRoot == null)
+        {
+            return null;
+        }
+
+        int compareResult = localRoot.data.compareTo(data);
+
+        if(compareResult > 1)
+        {
+            // Q1
+            localRoot.children[QuadNode.OUTER_LEFT_CHILD] = remove(localRoot.children[QuadNode.OUTER_LEFT_CHILD], data);
+        }
+        else if(compareResult > 0)
+        {
+            // Q2
+            localRoot.children[QuadNode.INNER_LEFT_CHILD]  = remove(localRoot.children[QuadNode.INNER_LEFT_CHILD], data);;
+        }
+        else if(compareResult < -1)
+        {
+            // Q4
+            localRoot.children[QuadNode.OUTER_RIGHT_CHILD]  = remove(localRoot.children[QuadNode.OUTER_RIGHT_CHILD], data);;
+        }
+        else if(compareResult < 0)
+        {
+            // Q3
+            localRoot.children[QuadNode.INNER_RIGHT_CHILD]  = remove(localRoot.children[QuadNode.INNER_RIGHT_CHILD], data);;
+        }
+        else if(compareResult == 0)
+        {
+            // Found data
+            QuadNode<E> replacement = null;
+
+            size--;
+            dataDeleted = localRoot.data;
+            for(int i = 0; i < QuadNode.NUMBER_OF_CHILDREN && replacement == null; i++)
+            {
+                replacement = localRoot.children[i];
+            }
+
+            return replacement;
+        }
+
+
+        return localRoot;
+    }
+
+    public long size()
+    {
+        return size;
     }
 
     // Add Serializable and make E extend Comparable?

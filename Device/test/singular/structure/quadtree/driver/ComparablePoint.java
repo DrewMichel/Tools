@@ -17,6 +17,9 @@ public class ComparablePoint extends Point implements Comparable
         super(x, y);
     }
 
+    // Could change to return index position in array that data should be added into
+    // With -1 as equals?
+    // Would a custom comparison be made instead?
     @Override
     public int compareTo(Object o)
     {
