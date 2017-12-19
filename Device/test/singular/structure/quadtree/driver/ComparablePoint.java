@@ -20,6 +20,7 @@ public class ComparablePoint extends Point implements Comparable
     // Could change to return index position in array that data should be added into
     // With -1 as equals?
     // Would a custom comparison be made instead?
+    // Could return a byte as well
     @Override
     public int compareTo(Object o)
     {

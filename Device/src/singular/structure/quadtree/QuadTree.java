@@ -10,7 +10,6 @@ import java.util.List;
  */
 
 // Add Serializable and Iterable<E>
-// Make abstract?
 public class QuadTree<E extends Comparable> implements TreeTemplate<E>
 {
     protected QuadNode<E> root;
@@ -22,6 +21,17 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>
     public QuadTree()
     {
         root = null;
+
+        size = 0;
+        addSuccessful = false;
+        dataDeleted = null;
+    }
+
+    protected QuadTree(QuadNode<E> localRoot)
+    {
+        root = localRoot;
+
+        determineSize();
 
         addSuccessful = false;
         dataDeleted = null;
@@ -268,16 +278,16 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>
     {
         dataDeleted = null;
 
-        root = remove(root, data);
+        root = remove(root, null, (byte) -1, data);
 
         return dataDeleted;
     }
 
-    private QuadNode<E> remove(QuadNode<E> localRoot, E data)
+    private QuadNode<E> remove(QuadNode<E> localRoot, QuadNode<E> parent, byte index, E data)
     {
         if(localRoot == null)
         {
-            return null;
+            return localRoot;
         }
 
         int compareResult = localRoot.data.compareTo(data);
@@ -285,40 +295,151 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>
         if(compareResult > 1)
         {
             // Q1
-            localRoot.children[QuadNode.OUTER_LEFT_CHILD] = remove(localRoot.children[QuadNode.OUTER_LEFT_CHILD], data);
+            localRoot.children[QuadNode.OUTER_LEFT_CHILD] = remove(localRoot.children[QuadNode.OUTER_LEFT_CHILD], localRoot, QuadNode.OUTER_LEFT_CHILD, data);
         }
         else if(compareResult > 0)
         {
             // Q2
-            localRoot.children[QuadNode.INNER_LEFT_CHILD]  = remove(localRoot.children[QuadNode.INNER_LEFT_CHILD], data);;
+            localRoot.children[QuadNode.INNER_LEFT_CHILD]  = remove(localRoot.children[QuadNode.INNER_LEFT_CHILD], localRoot, QuadNode.INNER_LEFT_CHILD, data);;
         }
         else if(compareResult < -1)
         {
             // Q4
-            localRoot.children[QuadNode.OUTER_RIGHT_CHILD]  = remove(localRoot.children[QuadNode.OUTER_RIGHT_CHILD], data);;
+            localRoot.children[QuadNode.OUTER_RIGHT_CHILD]  = remove(localRoot.children[QuadNode.OUTER_RIGHT_CHILD], localRoot, QuadNode.OUTER_RIGHT_CHILD, data);;
         }
         else if(compareResult < 0)
         {
             // Q3
-            localRoot.children[QuadNode.INNER_RIGHT_CHILD]  = remove(localRoot.children[QuadNode.INNER_RIGHT_CHILD], data);;
+            localRoot.children[QuadNode.INNER_RIGHT_CHILD]  = remove(localRoot.children[QuadNode.INNER_RIGHT_CHILD], localRoot, QuadNode.INNER_RIGHT_CHILD, data);;
         }
-        else if(compareResult == 0)
+        else //if(compareResult == 0)
         {
             // Found data
-            QuadNode<E> replacement = null;
 
-            size--;
             dataDeleted = localRoot.data;
-            for(int i = 0; i < QuadNode.NUMBER_OF_CHILDREN && replacement == null; i++)
+            size--;
+
+            byte nullChildren = 0;
+            byte childIndex = 0;
+
+            for(byte i = 0; i < QuadNode.NUMBER_OF_CHILDREN; i++)
             {
-                replacement = localRoot.children[i];
+                if(localRoot.children[i] == null)
+                {
+                    nullChildren++;
+                }
+                else
+                {
+                    childIndex = i;
+                }
             }
 
-            return replacement;
+            if(nullChildren >= QuadNode.NUMBER_OF_CHILDREN - 1)
+            {
+                // All null or one child
+                return localRoot.children[childIndex]; // returns the single child or null
+            }
+//            else if(nullChildren == QuadNode.NUMBER_OF_CHILDREN)
+//            {
+//                // No Children
+//                return null;
+//            }
+            else
+            {
+                // Multiple children
+
+                // TODO: Needs revision
+
+                QuadTree<E>[] distributions = new QuadTree[QuadNode.NUMBER_OF_CHILDREN];
+
+                for(byte i = 0; i < distributions.length; i++)
+                {
+                    distributions[i] = new QuadTree<>(localRoot.children[i]);
+                }
+
+                if(parent != null)
+                {
+                    // TODO: Could pass parent node and index through to prevent retracing
+                    //forceDelete(root, localRoot.data);
+                    parent.children[index] = null;
+
+                    // TODO: Iterate over distributions and add back into tree
+                    for(byte i = 0; i < distributions.length; i++)
+                    {
+                        preorderAddTree(distributions[i]);
+                    }
+
+                    localRoot = parent.children[index];
+                }
+                else // if(parent == null) // parent is root
+                {
+                    root = null;
+
+                    for(byte i = 0; i < distributions.length; i++)
+                    {
+                        preorderAddTree(distributions[i]);
+                    }
+
+                    localRoot = root;
+                }
+            }
         }
 
-
         return localRoot;
+    }
+
+    private boolean preorderAddTree(QuadTree<E> tree)
+    {
+        addSuccessful = false;
+
+        preorderAdd(tree.root);
+
+        return addSuccessful;
+    }
+
+    private void preorderAdd(QuadNode<E> localRoot)
+    {
+        if(localRoot != null)
+        {
+            add(localRoot.data);
+            size--;
+            preorderAdd(localRoot.children[QuadNode.OUTER_LEFT_CHILD]);
+            preorderAdd(localRoot.children[QuadNode.INNER_LEFT_CHILD]);
+            preorderAdd(localRoot.children[QuadNode.INNER_RIGHT_CHILD]);
+            preorderAdd(localRoot.children[QuadNode.OUTER_RIGHT_CHILD]);
+        }
+    }
+
+//    private boolean forceDelete(QuadNode<E> localRoot, E data)
+//    {
+//
+//    }
+
+//    private QuadNode<E> findLargestChild(QuadNode<E> localRoot)
+//    {
+//        // TODO: NEEDS IMPLEMENTATION
+//        return null;
+//    }
+
+    public long determineSize()
+    {
+        size = 0;
+
+        determine(root);
+
+        return size;
+    }
+
+    private void determine(QuadNode<E> localRoot)
+    {
+        if(localRoot != null)
+        {
+            size++;
+            determine(localRoot.children[QuadNode.OUTER_LEFT_CHILD]);
+            determine(localRoot.children[QuadNode.INNER_LEFT_CHILD]);
+            determine(localRoot.children[QuadNode.INNER_RIGHT_CHILD]);
+            determine(localRoot.children[QuadNode.OUTER_RIGHT_CHILD]);
+        }
     }
 
     public long size()
@@ -326,12 +447,17 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>
         return size;
     }
 
+    public boolean isEmpty()
+    {
+        return size < 1;
+    }
+
     // Add Serializable and make E extend Comparable?
     protected static class QuadNode<E>
     {
-        public static final int NUMBER_OF_CHILDREN = 4;
+        public static final byte NUMBER_OF_CHILDREN = 4;
 
-        public static final int OUTER_LEFT_CHILD = 0, INNER_LEFT_CHILD = 1, INNER_RIGHT_CHILD = 2, OUTER_RIGHT_CHILD = 3;
+        public static final byte OUTER_LEFT_CHILD = 0, INNER_LEFT_CHILD = 1, INNER_RIGHT_CHILD = 2, OUTER_RIGHT_CHILD = 3;
 
         protected QuadNode<E>[] children;
 

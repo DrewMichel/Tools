@@ -18,14 +18,14 @@ public class QuadTreeTraversalDriver
 
         Random generator = new Random();
 
-        int count = 20;
+        int count = 1000;
 
         ComparablePoint current = null;
 
         System.out.println("CREATING TREE");
         for(int i = 0; i < count; i++)
         {
-            current = new ComparablePoint(generator.nextInt(100), generator.nextInt(100));
+            current = new ComparablePoint(generator.nextInt(100000), generator.nextInt(100000));
             System.out.print(current + " ");
             tree.add(current);
         }
@@ -53,10 +53,24 @@ public class QuadTreeTraversalDriver
         System.out.println("\nREMOVING FROM TREE");
         for(int i = 0; i < preorderList.size() / 2; i++)
         {
-            System.out.print(preorderList.get(i) + " ");
+            //System.out.print(preorderList.get(i) + " ");
             System.out.print(tree.remove(preorderList.get(i)) + " ");
         }
 
+        System.out.println("\n\nDISPLAYING BEFORE REMOVAL");
+        for(ComparablePoint cp : inorderList)
+        {
+            System.out.print(cp + " ");
+        }
+
+        inorderList = tree.inorderTraversal();
+        System.out.println("\n\nDISPLAYING AFTER REMOVAL");
+        for(ComparablePoint cp : inorderList)
+        {
+            System.out.print(cp + " ");
+        }
+
+        System.out.println();
 
 //        inorderList = tree.inorderTraversal();
 //
