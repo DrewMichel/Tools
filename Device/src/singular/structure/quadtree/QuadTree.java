@@ -1,19 +1,21 @@
 package singular.structure.quadtree;
 
+import singular.structure.stack.AdjustableStack;
+import singular.structure.stack.StackTemplate;
 import singular.structure.tree.TreeTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Created by Andrew Michel on 12/18/2017.
  */
 
 // Add Serializable and Iterable<E>
-public class QuadTree<E extends Comparable> implements TreeTemplate<E>
+public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable<E>
 {
     protected QuadNode<E> root;
-    protected long size;
+    protected int size;
 
     protected boolean addSuccessful;
     protected E dataDeleted;
@@ -421,7 +423,7 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>
 //        return null;
 //    }
 
-    public long determineSize()
+    public int determineSize()
     {
         size = 0;
 
@@ -442,7 +444,7 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>
         }
     }
 
-    public long size()
+    public int size()
     {
         return size;
     }
@@ -452,27 +454,147 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>
         return size < 1;
     }
 
+    @Override
+    public Iterator<E> iterator()
+    {
+        return new QuadIterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super E> action) throws UnsupportedOperationException
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Spliterator<E> spliterator() throws UnsupportedOperationException
+    {
+        throw new UnsupportedOperationException();
+    }
+
     // Add Serializable and make E extend Comparable?
-    protected static class QuadNode<E>
+    protected static class QuadNode<T>
     {
         public static final byte NUMBER_OF_CHILDREN = 4;
 
         public static final byte OUTER_LEFT_CHILD = 0, INNER_LEFT_CHILD = 1, INNER_RIGHT_CHILD = 2, OUTER_RIGHT_CHILD = 3;
 
-        protected QuadNode<E>[] children;
+        protected QuadNode<T>[] children;
 
-        protected E data;
+        protected T data;
 
         // Duplicates can be handled by counting the number of values at this node
         // (good for simple points)
         // Or by having a list of data
         // (good for unique or moving data where the position doesn't represent the entire object)
 
-        public QuadNode(E data)
+        public QuadNode(T data)
         {
             children = new QuadNode[NUMBER_OF_CHILDREN];
 
             this.data = data;
+        }
+    }
+
+    // TODO: NEEDS IMPLEMENTATION
+    // On creation populate stack by
+    // Pushing current node
+    // recursive call on inner left
+    // recursive call on inner right
+
+    protected class QuadIterator implements Iterator<E>
+    {
+        protected static final int DEFAULT_SIZE_DIVIDEND = 2;
+
+        protected StackTemplate<QuadNode<E>> nodeStack;
+        protected E lastItemReturned;
+
+        // TODO: INSTANCE VARIABLES
+        // protected QuadNode<E> parent;
+        // protected QuadNode<E> next;
+
+        // protected int expectedNodes;
+
+        public QuadIterator()
+        {
+            // TODO:
+
+            initialPopulateNodeStack();
+            lastItemReturned = null;
+        }
+
+        protected boolean initialPopulateNodeStack()
+        {
+            nodeStack = new AdjustableStack<>(size / DEFAULT_SIZE_DIVIDEND);
+
+            addLeftChildren(root);
+
+            return true;
+        }
+
+        protected void addLeftChildren(QuadNode<E> localRoot)
+        {
+            if(localRoot != null)
+            {
+                nodeStack.push(localRoot);
+                addLeftChildren(localRoot.children[QuadNode.INNER_LEFT_CHILD]);
+                addLeftChildren(localRoot.children[QuadNode.OUTER_LEFT_CHILD]);
+            }
+        }
+
+        protected void addRightChildren(QuadNode<E> localRoot)
+        {
+            if(localRoot != null)
+            {
+                // TODO: NEEDS IMPLEMENTATION
+
+                //addRightChildren(localRoot.children[QuadNode.OUTER_RIGHT_CHILD]);
+                //addRightChildren(localRoot.children[QuadNode.INNER_RIGHT_CHILD]);
+
+                // Push? $Probably not/Might need to. Where?
+            }
+        }
+
+        @Override
+        public boolean hasNext()
+        {
+            return !nodeStack.isEmpty();
+        }
+
+        // TODO: IMPLEMENTATION
+        // Algorithm:
+        // 1) node/lastItemReturned = stack.pop;
+        // 2) if node.children[outer right] != null
+        //      push outer right child
+        //      call addLeftChildren on outer right child?
+        // 3) if node.children[inner right] != null
+        //      push inner right child
+        //      call addLeftChildren on inner right child?
+        // 4) Missing something? inner left child should be fine
+        // 5) return node/lastItemReturned;
+
+        // Could use concurrent check
+        @Override
+        public E next() throws NoSuchElementException//, ConcurrentModificationException
+        {
+            if(!hasNext())
+            {
+                throw new NoSuchElementException();
+            }
+
+            return null;
+        }
+
+        @Override
+        public void remove() throws UnsupportedOperationException
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void forEachRemaining(Consumer<? super E> action) throws UnsupportedOperationException
+        {
+            throw new UnsupportedOperationException();
         }
     }
 }
