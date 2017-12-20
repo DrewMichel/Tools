@@ -1,6 +1,8 @@
 package singular.structure.quadtree.driver;
 
 import singular.structure.quadtree.QuadTree;
+import singular.unit.time.Chrono;
+import singular.unit.time.Chronometer;
 
 import java.util.Iterator;
 import java.util.List;
@@ -17,6 +19,8 @@ public class QuadTreeTraversalDriver
 
         List<ComparablePoint> inorderList = null, preorderList = null;
 
+        Chrono addTimer = null, iterateTimer = null;
+
         Random generator = new Random();
 
         int count = 10000000;
@@ -24,12 +28,17 @@ public class QuadTreeTraversalDriver
         ComparablePoint current = null;
 
         System.out.println("CREATING TREE");
+
+        addTimer = new Chronometer();
         for(int i = 0; i < count; i++)
         {
             current = new ComparablePoint(generator.nextInt(Integer.MAX_VALUE), generator.nextInt(Integer.MAX_VALUE));
             //System.out.print(current + " ");
             tree.add(current);
         }
+        addTimer.updateEndTime();
+
+        System.out.println(addTimer);
 
 //        inorderList = tree.inorderTraversal();
 //        preorderList = tree.preorderTraversal();
@@ -80,9 +89,10 @@ public class QuadTreeTraversalDriver
 
         System.out.println("\n\nDISPLAYING INORDER ITERATOR ELEMENTS");
         //Iterator<ComparablePoint> inorderIterator = tree.iterator();
-        QuadTree.QuadIterator inorderIterator = tree.inorderIterator();
-
         int iterations = 0;
+
+        iterateTimer = new Chronometer();
+        QuadTree.QuadIterator inorderIterator = tree.inorderIterator();
 
         while(inorderIterator.hasNext())
         {
@@ -90,6 +100,9 @@ public class QuadTreeTraversalDriver
             inorderIterator.next();
             iterations++;
         }
+        iterateTimer.updateEndTime();
+
+        System.out.println(iterateTimer);
 
         System.out.println("\n\nINORDER ITERATOR CAPACITY: " + inorderIterator.capacity());
         System.out.println("NUMBER OF ITERATIONS: " + iterations);
@@ -106,5 +119,7 @@ public class QuadTreeTraversalDriver
         System.out.println("\n\nCOUNT NUMBER: " + count);
         //System.out.println("LIST SIZE: " + inorderList.size());
         System.out.println("TREE SIZE: " + tree.size());
+
+        System.out.println("TOTAL " + new Chronometer(addTimer.getStartTime(), iterateTimer.getEndTime() - (iterateTimer.getStartTime() - addTimer.getEndTime())));
     }
 }

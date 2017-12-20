@@ -519,8 +519,6 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
     // Nested abstract class QuadIterator begin
     public abstract class QuadIterator implements Iterator<E>
     {
-        protected static final int DEFAULT_SIZE_DIVIDEND = 4;
-
         protected StackTemplate<QuadNode<E>> nodeStack;
 
 
@@ -530,6 +528,11 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
         // protected E lastItemReturned;
 
         // protected int expectedNodes;
+
+        public QuadIterator()
+        {
+            nodeStack = new AdjustableStack<>();
+        }
 
         protected void addAllLeftChildren(QuadNode<E> localRoot)
         {
@@ -543,10 +546,6 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
 
         protected void addImmediateLeftChildren(QuadNode<E> localRoot)
         {
-            // Assume not null?
-            // TODO: NEEDS IMPLEMENTATION
-            // check if children aren't null then push
-
             if(localRoot.children[QuadNode.INNER_LEFT_CHILD] != null)
             {
                 nodeStack.push(localRoot.children[QuadNode.INNER_LEFT_CHILD]);
@@ -571,11 +570,6 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
 
         protected void addImmediateRightChildren(QuadNode<E> localRoot)
         {
-            // Assume not null?
-            // TODO: NEEDS IMPLEMENTATION
-
-            // check if children aren't null then push
-
             if(localRoot.children[QuadNode.OUTER_RIGHT_CHILD] != null)
             {
                 nodeStack.push(localRoot.children[QuadNode.OUTER_RIGHT_CHILD]);
@@ -615,37 +609,25 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
     // Nested class InorderQuadIterator begin
     public class InorderQuadIterator extends QuadIterator
     {
-
-
         public InorderQuadIterator()
         {
-            // TODO: CONSTRUCTOR IMPLEMENTATION
+            super();
 
             initialPopulateNodeStack();
         }
 
         protected boolean initialPopulateNodeStack()
         {
-            nodeStack = new AdjustableStack<>();
-
             addAllLeftChildren(root);
 
             return true;
         }
-
-
-
-        // TODO: IMPLEMENTATION
+        
         // Algorithm:
         // 1) node/lastItemReturned = stack.pop;
-        // 2) if node.children[outer right] != null
-        //      push outer right child
-        //      call addAllLeftChildren on outer right child?
-        // 3) if node.children[inner right] != null
-        //      push inner right child
-        //      call addAllLeftChildren on inner right child?
-        // 4) Missing something? inner left child should be fine
-        // 5) return node/lastItemReturned;
+        // 2) call addAllLeftChildren on outer right child
+        // 3) call addAllLeftChildren on inner right child
+        // 4) return node/lastItemReturned;
 
         // Could use concurrent check
         @Override
@@ -658,17 +640,9 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
 
             QuadNode<E> top = nodeStack.pop();
 
-            //if(top.children[QuadNode.OUTER_RIGHT_CHILD] != null)
-            {
-                //nodeStack.push(top.children[QuadNode.OUTER_RIGHT_CHILD]);
-                addAllLeftChildren(top.children[QuadNode.OUTER_RIGHT_CHILD]);
-            }
+            addAllLeftChildren(top.children[QuadNode.OUTER_RIGHT_CHILD]);
 
-            //if(top.children[QuadNode.INNER_RIGHT_CHILD] != null)
-            {
-                //nodeStack.push(top.children[QuadNode.INNER_RIGHT_CHILD]);
-                addAllLeftChildren(top.children[QuadNode.INNER_RIGHT_CHILD]);
-            }
+            addAllLeftChildren(top.children[QuadNode.INNER_RIGHT_CHILD]);
 
             return top.data;
         }
