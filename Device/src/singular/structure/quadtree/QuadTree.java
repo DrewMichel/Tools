@@ -14,6 +14,8 @@ import java.util.function.Consumer;
 // Add Serializable and Iterable<E>
 public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable<E>
 {
+    public static final int DEPTH_SPACING_MULTIPLIER = 3;
+
     protected QuadNode<E> root;
     protected int size;
 
@@ -75,13 +77,13 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
 
     private void preorderTraverse(StringBuilder sb, StringBuilder spaces, QuadNode<E> localRoot, int depth)
     {
-        if(spaces.length() > depth * 3)
+        if(spaces.length() > depth * DEPTH_SPACING_MULTIPLIER)
         {
-            spaces.setLength(depth * 3);
+            spaces.setLength(depth * DEPTH_SPACING_MULTIPLIER);
         }
         else
         {
-            while(depth * 3 > spaces.length())
+            while(depth * DEPTH_SPACING_MULTIPLIER > spaces.length())
             {
                 spaces.append(" ");
             }
@@ -454,10 +456,27 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
         return size < 1;
     }
 
+    // TODO: Include additional iterators (classes?) for preorder and postorder?
     @Override
     public Iterator<E> iterator()
     {
-        return new QuadIterator();
+        return inorderIterator();
+        //return new InorderQuadIterator();
+    }
+
+    public Iterator<E> inorderIterator()
+    {
+        return new InorderQuadIterator();
+    }
+
+    public Iterator<E> preorderIterator()
+    {
+        return new PreorderQuadIterator();
+    }
+
+    public Iterator<E> postorderIterator()
+    {
+        return new PostorderQuadIterator();
     }
 
     @Override
@@ -472,8 +491,9 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
         throw new UnsupportedOperationException();
     }
 
-    // Add Serializable and make E extend Comparable?
-    protected static class QuadNode<T>
+
+    // Nested class QuadNode begin
+    protected static class QuadNode<T> // Add Serializable?
     {
         public static final byte NUMBER_OF_CHILDREN = 4;
 
@@ -494,7 +514,13 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
 
             this.data = data;
         }
-    }
+    } // Nested class QuadNode end
+
+    // Nested abstract class QuadIterator begin
+    public abstract class QuadIterator implements Iterator<E>
+    {
+
+    } // Nested abstract class QuadIterator end
 
     // TODO: NEEDS IMPLEMENTATION
     // On creation populate stack by
@@ -502,25 +528,27 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
     // recursive call on inner left
     // recursive call on inner right
 
-    protected class QuadIterator implements Iterator<E>
+    // TODO: MOVE INSTANCE VARIABLES, CONSTANTS TO QUADITERATOR
+    // Nested class InorderQuadIterator begin
+    public class InorderQuadIterator extends QuadIterator
     {
         protected static final int DEFAULT_SIZE_DIVIDEND = 2;
 
         protected StackTemplate<QuadNode<E>> nodeStack;
         protected E lastItemReturned;
 
-        // TODO: INSTANCE VARIABLES
+        // TODO: DETERMINE NECESSARY INSTANCE VARIABLES
         // protected QuadNode<E> parent;
         // protected QuadNode<E> next;
 
         // protected int expectedNodes;
 
-        public QuadIterator()
+        public InorderQuadIterator()
         {
-            // TODO:
+            // TODO: CONSTRUCTOR IMPLEMENTATION
 
             initialPopulateNodeStack();
-            lastItemReturned = null;
+            lastItemReturned = null; // = root?
         }
 
         protected boolean initialPopulateNodeStack()
@@ -596,5 +624,65 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
         {
             throw new UnsupportedOperationException();
         }
-    }
+    } // Nested class InorderQuadIterator end
+
+    // Nested class PreorderQuadIterator begin
+    public class PreorderQuadIterator extends QuadIterator
+    {
+        // TODO: NEEDS IMPLEMENTATION
+
+        @Override
+        public boolean hasNext()
+        {
+            return false;
+        }
+
+        @Override
+        public E next()
+        {
+            return null;
+        }
+
+        @Override
+        public void remove() throws UnsupportedOperationException
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void forEachRemaining(Consumer<? super E> action) throws UnsupportedOperationException
+        {
+            throw new UnsupportedOperationException();
+        }
+    } // Nested class PreorderQuadIterator end
+
+    // Nested class PostorderQuadIterator begin
+    public class PostorderQuadIterator extends QuadIterator
+    {
+        // TODO: NEEDS IMPLEMENTATION
+
+        @Override
+        public boolean hasNext()
+        {
+            return false;
+        }
+
+        @Override
+        public E next()
+        {
+            return null;
+        }
+
+        @Override
+        public void remove() throws UnsupportedOperationException
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void forEachRemaining(Consumer<? super E> action) throws UnsupportedOperationException
+        {
+            throw new UnsupportedOperationException();
+        }
+    } // Nested class PostorderQuadIterator end
 }

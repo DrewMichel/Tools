@@ -2,6 +2,7 @@ package singular.structure.quadtree.driver;
 
 import singular.structure.quadtree.QuadTree;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -84,5 +85,6 @@ public class QuadTreeTraversalDriver
         System.out.println("\n\nCOUNT NUMBER: " + count);
         System.out.println("LIST SIZE: " + inorderList.size());
         System.out.println("TREE SIZE: " + tree.size());
+
     }
 }
