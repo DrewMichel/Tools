@@ -464,7 +464,7 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
         //return new InorderQuadIterator();
     }
 
-    public Iterator<E> inorderIterator()
+    public InorderQuadIterator inorderIterator()
     {
         return new InorderQuadIterator();
     }
@@ -519,6 +519,90 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
     // Nested abstract class QuadIterator begin
     public abstract class QuadIterator implements Iterator<E>
     {
+        protected static final int DEFAULT_SIZE_DIVIDEND = 4;
+
+        protected StackTemplate<QuadNode<E>> nodeStack;
+
+
+        // TODO: DETERMINE NECESSARY INSTANCE VARIABLES
+        // protected QuadNode<E> parent;
+        // protected QuadNode<E> next;
+        // protected E lastItemReturned;
+
+        // protected int expectedNodes;
+
+        protected void addAllLeftChildren(QuadNode<E> localRoot)
+        {
+            if(localRoot != null)
+            {
+                nodeStack.push(localRoot);
+                addAllLeftChildren(localRoot.children[QuadNode.INNER_LEFT_CHILD]);
+                addAllLeftChildren(localRoot.children[QuadNode.OUTER_LEFT_CHILD]);
+            }
+        }
+
+        protected void addImmediateLeftChildren(QuadNode<E> localRoot)
+        {
+            // Assume not null?
+            // TODO: NEEDS IMPLEMENTATION
+            // check if children aren't null then push
+
+            if(localRoot.children[QuadNode.INNER_LEFT_CHILD] != null)
+            {
+                nodeStack.push(localRoot.children[QuadNode.INNER_LEFT_CHILD]);
+            }
+
+            if(localRoot.children[QuadNode.OUTER_LEFT_CHILD] != null)
+            {
+                nodeStack.push(localRoot.children[QuadNode.OUTER_LEFT_CHILD]);
+            }
+        }
+
+        protected void addAllRightChildren(QuadNode<E> localRoot)
+        {
+            if(localRoot != null)
+            {
+                addAllRightChildren(localRoot.children[QuadNode.OUTER_RIGHT_CHILD]);
+                addAllRightChildren(localRoot.children[QuadNode.INNER_RIGHT_CHILD]);
+
+                nodeStack.push(localRoot);
+            }
+        }
+
+        protected void addImmediateRightChildren(QuadNode<E> localRoot)
+        {
+            // Assume not null?
+            // TODO: NEEDS IMPLEMENTATION
+
+            // check if children aren't null then push
+
+            if(localRoot.children[QuadNode.OUTER_RIGHT_CHILD] != null)
+            {
+                nodeStack.push(localRoot.children[QuadNode.OUTER_RIGHT_CHILD]);
+            }
+
+            if(localRoot.children[QuadNode.INNER_RIGHT_CHILD] != null)
+            {
+                nodeStack.push(localRoot.children[QuadNode.INNER_RIGHT_CHILD]);
+            }
+
+        }
+
+        @Override
+        public boolean hasNext()
+        {
+            return !nodeStack.isEmpty();
+        }
+
+        public int size()
+        {
+            return nodeStack.size();
+        }
+
+        public int capacity()
+        {
+            return nodeStack.capacity();
+        }
 
     } // Nested abstract class QuadIterator end
 
@@ -528,76 +612,38 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
     // recursive call on inner left
     // recursive call on inner right
 
-    // TODO: MOVE INSTANCE VARIABLES, CONSTANTS TO QUADITERATOR
     // Nested class InorderQuadIterator begin
     public class InorderQuadIterator extends QuadIterator
     {
-        protected static final int DEFAULT_SIZE_DIVIDEND = 2;
 
-        protected StackTemplate<QuadNode<E>> nodeStack;
-        protected E lastItemReturned;
-
-        // TODO: DETERMINE NECESSARY INSTANCE VARIABLES
-        // protected QuadNode<E> parent;
-        // protected QuadNode<E> next;
-
-        // protected int expectedNodes;
 
         public InorderQuadIterator()
         {
             // TODO: CONSTRUCTOR IMPLEMENTATION
 
             initialPopulateNodeStack();
-            lastItemReturned = null; // = root?
         }
 
         protected boolean initialPopulateNodeStack()
         {
-            nodeStack = new AdjustableStack<>(size / DEFAULT_SIZE_DIVIDEND);
+            nodeStack = new AdjustableStack<>();
 
-            addLeftChildren(root);
+            addAllLeftChildren(root);
 
             return true;
         }
 
-        protected void addLeftChildren(QuadNode<E> localRoot)
-        {
-            if(localRoot != null)
-            {
-                nodeStack.push(localRoot);
-                addLeftChildren(localRoot.children[QuadNode.INNER_LEFT_CHILD]);
-                addLeftChildren(localRoot.children[QuadNode.OUTER_LEFT_CHILD]);
-            }
-        }
 
-        protected void addRightChildren(QuadNode<E> localRoot)
-        {
-            if(localRoot != null)
-            {
-                // TODO: NEEDS IMPLEMENTATION
-
-                //addRightChildren(localRoot.children[QuadNode.OUTER_RIGHT_CHILD]);
-                //addRightChildren(localRoot.children[QuadNode.INNER_RIGHT_CHILD]);
-
-                // Push? $Probably not/Might need to. Where?
-            }
-        }
-
-        @Override
-        public boolean hasNext()
-        {
-            return !nodeStack.isEmpty();
-        }
 
         // TODO: IMPLEMENTATION
         // Algorithm:
         // 1) node/lastItemReturned = stack.pop;
         // 2) if node.children[outer right] != null
         //      push outer right child
-        //      call addLeftChildren on outer right child?
+        //      call addAllLeftChildren on outer right child?
         // 3) if node.children[inner right] != null
         //      push inner right child
-        //      call addLeftChildren on inner right child?
+        //      call addAllLeftChildren on inner right child?
         // 4) Missing something? inner left child should be fine
         // 5) return node/lastItemReturned;
 
@@ -610,7 +656,21 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
                 throw new NoSuchElementException();
             }
 
-            return null;
+            QuadNode<E> top = nodeStack.pop();
+
+            //if(top.children[QuadNode.OUTER_RIGHT_CHILD] != null)
+            {
+                //nodeStack.push(top.children[QuadNode.OUTER_RIGHT_CHILD]);
+                addAllLeftChildren(top.children[QuadNode.OUTER_RIGHT_CHILD]);
+            }
+
+            //if(top.children[QuadNode.INNER_RIGHT_CHILD] != null)
+            {
+                //nodeStack.push(top.children[QuadNode.INNER_RIGHT_CHILD]);
+                addAllLeftChildren(top.children[QuadNode.INNER_RIGHT_CHILD]);
+            }
+
+            return top.data;
         }
 
         @Override
