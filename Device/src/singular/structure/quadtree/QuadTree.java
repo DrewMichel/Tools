@@ -491,7 +491,6 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
         throw new UnsupportedOperationException();
     }
 
-
     // Nested class QuadNode begin
     protected static class QuadNode<T> // Add Serializable?
     {
@@ -520,7 +519,6 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
     public abstract class QuadIterator implements Iterator<E>
     {
         protected StackTemplate<QuadNode<E>> nodeStack;
-
 
         // TODO: DETERMINE NECESSARY INSTANCE VARIABLES
         // protected QuadNode<E> parent;
@@ -663,18 +661,43 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
     // Nested class PreorderQuadIterator begin
     public class PreorderQuadIterator extends QuadIterator
     {
-        // TODO: NEEDS IMPLEMENTATION
-
-        @Override
-        public boolean hasNext()
+        public PreorderQuadIterator()
         {
-            return false;
+            super();
+
+            initialPopulateNodeStack();
+        }
+
+        protected boolean initialPopulateNodeStack()
+        {
+            if(root != null)
+            {
+                nodeStack.push(root);
+            }
+
+            return true;
         }
 
         @Override
-        public E next()
+        public E next() throws NoSuchElementException//, ConcurrentModificationException
         {
-            return null;
+            if(!hasNext())
+            {
+                throw new NoSuchElementException();
+            }
+
+            QuadNode<E> top = nodeStack.pop();
+
+            // Move towards dynamic tree
+            for(int i = QuadNode.NUMBER_OF_CHILDREN - 1; i >= 0; i--)
+            {
+                if(top.children[i] != null)
+                {
+                    nodeStack.push(top.children[i]);
+                }
+            }
+
+            return top.data;
         }
 
         @Override
@@ -694,12 +717,6 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
     public class PostorderQuadIterator extends QuadIterator
     {
         // TODO: NEEDS IMPLEMENTATION
-
-        @Override
-        public boolean hasNext()
-        {
-            return false;
-        }
 
         @Override
         public E next()

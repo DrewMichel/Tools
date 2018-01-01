@@ -24,6 +24,7 @@ public class QuadTreeTraversalDriver
         Random generator = new Random();
 
         int count = 10000000;
+        int range = Integer.MAX_VALUE;
 
         ComparablePoint current = null;
 
@@ -32,13 +33,43 @@ public class QuadTreeTraversalDriver
         addTimer = new Chronometer();
         for(int i = 0; i < count; i++)
         {
-            current = new ComparablePoint(generator.nextInt(Integer.MAX_VALUE), generator.nextInt(Integer.MAX_VALUE));
+            current = new ComparablePoint(generator.nextInt(range), generator.nextInt(range));
             //System.out.print(current + " ");
             tree.add(current);
         }
         addTimer.updateEndTime();
 
         System.out.println(addTimer);
+
+        preorderList = tree.preorderTraversal();
+
+        Iterator<ComparablePoint> preorderIterator = tree.preorderIterator();
+
+//        System.out.println("\n\nDISPLAYING PREORDER LIST");
+//        for(ComparablePoint cp : preorderList)
+//        {
+//            System.out.print(cp + " ");
+//        }
+//
+//        System.out.println("\n\nDISPLAYING PREORDER ITERATOR");
+//        while(preorderIterator.hasNext())
+//        {
+//            System.out.print(preorderIterator.next() + " ");
+//        }
+
+        //preorderIterator.next();
+        for(ComparablePoint cp : preorderList)
+        {
+            //assert cp.compareTo(preorderIterator.next()) == 0; // assert has to be enabled
+            ComparablePoint next = preorderIterator.next();
+
+            if(cp.compareTo(next) != 0)
+            {
+                throw new AssertionError("" + cp.compareTo(next));
+            }
+        }
+        System.out.println("ASSERT CLEARED ALL ELEMENTS EQUAL");
+
 
 //        inorderList = tree.inorderTraversal();
 //        preorderList = tree.preorderTraversal();
@@ -87,25 +118,25 @@ public class QuadTreeTraversalDriver
 //            System.out.print(cp + " ");
 //        }
 
-        System.out.println("\n\nDISPLAYING INORDER ITERATOR ELEMENTS");
-        //Iterator<ComparablePoint> inorderIterator = tree.iterator();
-        int iterations = 0;
-
-        iterateTimer = new Chronometer();
-        QuadTree.QuadIterator inorderIterator = tree.inorderIterator();
-
-        while(inorderIterator.hasNext())
-        {
-            //System.out.print(inorderIterator.next() + " ");
-            inorderIterator.next();
-            iterations++;
-        }
-        iterateTimer.updateEndTime();
-
-        System.out.println(iterateTimer);
-
-        System.out.println("\n\nINORDER ITERATOR CAPACITY: " + inorderIterator.capacity());
-        System.out.println("NUMBER OF ITERATIONS: " + iterations);
+//        System.out.println("\n\nDISPLAYING INORDER ITERATOR ELEMENTS");
+//        //Iterator<ComparablePoint> inorderIterator = tree.iterator();
+//        int iterations = 0;
+//
+//        iterateTimer = new Chronometer();
+//        QuadTree.QuadIterator inorderIterator = tree.inorderIterator();
+//
+//        while(inorderIterator.hasNext())
+//        {
+//            //System.out.print(inorderIterator.next() + " ");
+//            inorderIterator.next();
+//            iterations++;
+//        }
+//        iterateTimer.updateEndTime();
+//
+//        System.out.println(iterateTimer);
+//
+//        System.out.println("\n\nINORDER ITERATOR CAPACITY: " + inorderIterator.capacity());
+//        System.out.println("NUMBER OF ITERATIONS: " + iterations);
 
 //        inorderList = tree.inorderTraversal();
 //
@@ -117,9 +148,12 @@ public class QuadTreeTraversalDriver
 //        System.out.println("\n" + new ComparablePoint(-1,-1) + " " + tree.contains(new ComparablePoint(-1,-1)));
 
         System.out.println("\n\nCOUNT NUMBER: " + count);
-        //System.out.println("LIST SIZE: " + inorderList.size());
+        System.out.println("RANGE NUMBER: " + range);
+//        //System.out.println("LIST SIZE: " + inorderList.size());
+        System.out.println("PREORDER LIST SIZE: " + preorderList.size());
         System.out.println("TREE SIZE: " + tree.size());
-
-        System.out.println("TOTAL " + new Chronometer(addTimer.getStartTime(), iterateTimer.getEndTime() - (iterateTimer.getStartTime() - addTimer.getEndTime())));
+        System.out.println("PREORDER ITERATOR CAPACITY: " + ((QuadTree.PreorderQuadIterator)preorderIterator).capacity());
+//
+//        System.out.println("TOTAL " + new Chronometer(addTimer.getStartTime(), iterateTimer.getEndTime() - (iterateTimer.getStartTime() - addTimer.getEndTime())));
     }
 }
