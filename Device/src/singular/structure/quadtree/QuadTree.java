@@ -513,19 +513,56 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
 
             this.data = data;
         }
+
+        protected boolean isLeaf()
+        {
+            for(QuadNode<T> node : children)
+            {
+                if(node != null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        protected boolean isBranch()
+        {
+            for(QuadNode<T> node : children)
+            {
+                if(node != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        protected int directChildren()
+        {
+            int amount = 0;
+
+            for(QuadNode<T> node : children)
+            {
+                if(node != null)
+                {
+                    amount++;
+                }
+            }
+
+            return amount;
+        }
+
+
+
     } // Nested class QuadNode end
 
     // Nested abstract class QuadIterator begin
     public abstract class QuadIterator implements Iterator<E>
     {
         protected StackTemplate<QuadNode<E>> nodeStack;
-
-        // TODO: DETERMINE NECESSARY INSTANCE VARIABLES
-        // protected QuadNode<E> parent;
-        // protected QuadNode<E> next;
-        // protected E lastItemReturned;
-
-        // protected int expectedNodes;
 
         public QuadIterator()
         {
@@ -598,7 +635,6 @@ public class QuadTree<E extends Comparable> implements TreeTemplate<E>, Iterable
 
     } // Nested abstract class QuadIterator end
 
-    // TODO: NEEDS IMPLEMENTATION
     // On creation populate stack by
     // Pushing current node
     // recursive call on inner left

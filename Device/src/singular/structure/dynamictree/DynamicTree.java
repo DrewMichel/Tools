@@ -1,5 +1,7 @@
 package singular.structure.dynamictree;
 
+import singular.structure.stack.AdjustableStack;
+import singular.structure.stack.StackTemplate;
 import singular.structure.tree.TreeTemplate;
 
 import java.util.ArrayList;
@@ -74,7 +76,6 @@ public class DynamicTree <E extends Comparable> implements TreeTemplate<E>, Iter
         return list;
     }
 
-    // Should only require repositioning the list add method for preorder and postorder traverses
     private void inorderTraverse(List<E> list, DynamicNode<E> localRoot)
     {
         // Base case
@@ -100,20 +101,65 @@ public class DynamicTree <E extends Comparable> implements TreeTemplate<E>, Iter
     @Override
     public List<E> preorderTraversal()
     {
-        return null;
+        List<E> list = new ArrayList<>();
+
+        // Calls preorder recursive method
+        preorderTraverse(list, root);
+
+        return list;
+    }
+
+    private void preorderTraverse(List<E> list, DynamicNode<E> localRoot)
+    {
+        if(localRoot != null)
+        {
+            list.add(localRoot.data);
+
+            for(DynamicNode<E> node : localRoot.children)
+            {
+                preorderTraverse(list, node);
+            }
+        }
     }
 
     @Override
     public List<E> postorderTraversal()
     {
-        return null;
+        List<E> list = new ArrayList<>();
+
+        // Calls postorder recursive method
+        postorderTraverse(list, root);
+
+        return list;
     }
 
+    private void postorderTraverse(List<E> list, DynamicNode<E> localRoot)
+    {
+        if(localRoot != null)
+        {
+            for(DynamicNode<E> node : localRoot.children)
+            {
+                postorderTraverse(list, node);
+            }
+
+            list.add(localRoot.data);
+        }
+    }
 
     @Override
     public Iterator<E> iterator()
     {
-        return null;
+        return new DynamicInorderIterator();
+    }
+
+    public Iterator<E> inorderIterator()
+    {
+        return new DynamicInorderIterator();
+    }
+
+    public Iterator<E> preorderIterator()
+    {
+        return new DynamicPreorderIterator();
     }
 
     @Override
@@ -128,6 +174,101 @@ public class DynamicTree <E extends Comparable> implements TreeTemplate<E>, Iter
         return null;
     }
 
+    public abstract class DynamicIterator implements Iterator<E>
+    {
+        protected StackTemplate<DynamicNode<E>> nodeStack;
+
+        public DynamicIterator()
+        {
+            nodeStack = new AdjustableStack<>();
+        }
+
+        protected void pushAscendingChildren(DynamicNode<E> localRoot)
+        {
+            for(int i = 0; i < NUMBER_OF_CHILDREN; i++)
+            {
+                if(localRoot.children[i] != null)
+                {
+                    nodeStack.push(localRoot.children[i]);
+                }
+            }
+        }
+
+        protected void pushDescendingChildren(DynamicNode<E> localRoot)
+        {
+            for(int i = NUMBER_OF_CHILDREN - 1; i >= 0; i--)
+            {
+                if(localRoot.children[i] != null)
+                {
+                    nodeStack.push(localRoot.children[i]);
+                }
+            }
+        }
+
+        @Override
+        public boolean hasNext()
+        {
+            return !nodeStack.isEmpty();
+        }
+
+        @Override
+        public void remove() throws UnsupportedOperationException
+        {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    // TODO: NEEDS IMPLEMENTATION
+    protected class DynamicInorderIterator extends DynamicIterator
+    {
+        public DynamicInorderIterator()
+        {
+            super();
+
+            setup();
+        }
+
+        private void setup()
+        {
+
+        }
+
+        @Override
+        public E next()
+        {
+            return null;
+        }
+    }
+
+    // TODO: NEEDS TESTING
+    protected class DynamicPreorderIterator extends DynamicIterator
+    {
+        public DynamicPreorderIterator()
+        {
+            super();
+
+            setup();
+        }
+
+        private void setup()
+        {
+            if(root != null)
+            {
+                nodeStack.push(root);
+            }
+        }
+
+        @Override
+        public E next()
+        {
+            DynamicNode<E> node = nodeStack.pop();
+
+            pushDescendingChildren(node);
+
+            return node.data;
+        }
+    }
+
     // Nested static class begin
     protected static class DynamicNode<T>
     {
@@ -140,6 +281,72 @@ public class DynamicTree <E extends Comparable> implements TreeTemplate<E>, Iter
             children = new DynamicNode[numberOfChildren];
 
             this.data = data;
+        }
+
+        // is not a parent.  has no children
+        protected boolean isLeaf()
+        {
+            for(DynamicNode<T> node : children)
+            {
+                if(node != null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // is a parent.  has children
+        protected boolean isBranch()
+        {
+            return !isLeaf();
+        }
+
+        protected int directChildren()
+        {
+            int nodes = 0;
+
+            for(DynamicNode<T> node : children)
+            {
+                if(node != null)
+                {
+                    nodes++;
+                }
+            }
+
+            return nodes;
+        }
+
+        // TODO: NEEDS TESTING
+        // TODO: MOVE TO DYNAMIC TREE INSTEAD OF NODE? allChildren(DynamicNode<E> localRoot).  Mostly just recursiveChildren?
+        protected int allChildren()
+        {
+            int descendants = recursiveChildren(this);
+
+            return descendants;
+        }
+
+        protected int recursiveChildren(DynamicNode<T> localRoot)
+        {
+            if(localRoot == null)
+            {
+                return 0;
+            }
+            else
+            {
+                int descendants = directChildren();
+
+                for(DynamicNode<T> node : children)
+                {
+                    if(node != null)
+                    {
+                        descendants += recursiveChildren(node);
+                    }
+                }
+
+                return descendants;
+            }
         }
 
     } // Nested static class end
