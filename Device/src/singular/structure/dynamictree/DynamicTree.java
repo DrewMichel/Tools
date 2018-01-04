@@ -4,23 +4,30 @@ import singular.structure.stack.AdjustableStack;
 import singular.structure.stack.StackTemplate;
 import singular.structure.tree.TreeTemplate;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
  * Created by Andrew Michel on 1/1/2018.
  *
  * Recommended that the number of children node remain an even number
+ *
+ * The comparator should return the index position that the data will be inserted into with relation to a parent node
+ * The comparator's compare method first argument will be the parent node's data with the second argument the data to be inserted
+ *
+ * If the comparator is null, the objects will be cast to Comparable with lesser objects traversing down
+ * the left most index and greater objects traversing down the right most index
  */
-public class DynamicTree <E extends Comparable> implements TreeTemplate<E>, Iterable<E>
+public class DynamicTree<E> implements TreeTemplate<E>, Iterable<E>
 {
     // Defaults to a binary tree
     public static final int DEFAULT_NUMBER_OF_CHILDREN = 2;
 
-    private final int NUMBER_OF_CHILDREN;
+    protected final int NUMBER_OF_CHILDREN;
+
+    // null comparator should behave like a binary tree
+    // nodes will have to be type-casted to Comparable if the comparator is null
+    protected Comparator<E> comparator;
 
     protected int size;
 
@@ -36,30 +43,87 @@ public class DynamicTree <E extends Comparable> implements TreeTemplate<E>, Iter
         basicInitialization();
     }
 
-    public DynamicTree(int numberOfChildren)
-    {
-        NUMBER_OF_CHILDREN = numberOfChildren;
-
-        basicInitialization();
-    }
-
-    public DynamicTree(int numberOfChildren, E data)
+    public DynamicTree(int numberOfChildren, Comparator<E> comparator)
     {
         NUMBER_OF_CHILDREN = numberOfChildren;
 
         basicInitialization();
 
-        root = new DynamicNode<>(NUMBER_OF_CHILDREN, data);
-
-        size = 1;
+        this.comparator = comparator;
     }
 
     private void basicInitialization()
     {
+        comparator = null;
         root = null;
         size = 0;
         dataDeleted = null;
         addSuccessful = false;
+    }
+
+    public int size()
+    {
+        return size;
+    }
+
+    public boolean add(E data)
+    {
+        addSuccessful = false;
+
+        // Recursive method call
+        root = add(root, data);
+
+        return addSuccessful;
+    }
+
+    // TODO: NEEDS TESTING
+    protected DynamicNode<E> add(DynamicNode<E> localRoot, E data)
+    {
+        // Base case and insertion
+        if(localRoot == null)
+        {
+            addSuccessful = true;
+            size++;
+
+            return new DynamicNode<>(NUMBER_OF_CHILDREN, data);
+        }
+        else
+        {
+            // Compare data against localRoot.data and make recursive call
+
+            int compareResult;
+
+            if(comparator == null)
+            {
+                // cast to Comparable or Comparable<E>?
+                compareResult = ((Comparable)(localRoot.data)).compareTo(data);
+
+                if(compareResult > 0)
+                {
+                    localRoot.children[localRoot.leftMostIndex()] = add(localRoot.children[localRoot.leftMostIndex()], data);
+                }
+                else if(compareResult < 0)
+                {
+                    localRoot.children[localRoot.rightMostIndex()] = add(localRoot.children[localRoot.rightMostIndex()], data);
+                }
+            }
+            else
+            {
+                // use comparator
+                compareResult = comparator.compare(localRoot.data, data);
+
+                // TODO: NEEDS TESTING
+
+                if(compareResult >= 0)
+                {
+                    localRoot.children[compareResult] = add(localRoot.children[compareResult], data);
+                }
+            }
+
+            return localRoot;
+        }
+
+
     }
 
     // TODO: javadocs
@@ -162,6 +226,8 @@ public class DynamicTree <E extends Comparable> implements TreeTemplate<E>, Iter
         return new DynamicPreorderIterator();
     }
 
+    public Iterator<E> postorderIterator() { return new DynamicPostorderIterator(); }
+
     @Override
     public void forEach(Consumer<? super E> action)
     {
@@ -174,7 +240,7 @@ public class DynamicTree <E extends Comparable> implements TreeTemplate<E>, Iter
         return null;
     }
 
-    public abstract class DynamicIterator implements Iterator<E>
+    protected abstract class DynamicIterator implements Iterator<E>
     {
         protected StackTemplate<DynamicNode<E>> nodeStack;
 
@@ -259,8 +325,13 @@ public class DynamicTree <E extends Comparable> implements TreeTemplate<E>, Iter
         }
 
         @Override
-        public E next()
+        public E next() throws NoSuchElementException
         {
+            if(!hasNext())
+            {
+                throw new NoSuchElementException();
+            }
+
             DynamicNode<E> node = nodeStack.pop();
 
             pushDescendingChildren(node);
@@ -268,6 +339,94 @@ public class DynamicTree <E extends Comparable> implements TreeTemplate<E>, Iter
             return node.data;
         }
     }
+
+    protected static class DynamicContainer<T>
+    {
+        protected DynamicNode<T> node;
+
+        protected int index;
+
+        public DynamicContainer(DynamicNode node, int index)
+        {
+            this.node = node;
+            this.index = index;
+        }
+    }
+
+    // TODO: NEEDS TESTING
+    // Nested class begin
+    protected class DynamicPostorderIterator implements Iterator<E>
+    {
+        public static final int DEFAULT_INDEX = 0;
+
+        protected StackTemplate<DynamicContainer<E>> containerStack;
+
+        public DynamicPostorderIterator()
+        {
+            super();
+
+            setup();
+        }
+
+        private void setup()
+        {
+            containerStack = new AdjustableStack<>();
+
+            if(root != null)
+            {
+                containerStack.push(new DynamicContainer<E>(root, DEFAULT_INDEX));
+            }
+        }
+
+        protected void pushNextChild(DynamicContainer<E> container)
+        {
+            boolean pushed = false;
+
+            for(int i = container.index; i < NUMBER_OF_CHILDREN && !pushed; i++)
+            {
+                container.index++;
+
+                if(container.node.children[i] != null)
+                {
+                    pushed = true;
+
+                    containerStack.push(new DynamicContainer<E>(container.node.children[i], DEFAULT_INDEX));
+
+                    pushNextChild(containerStack.peek());
+                }
+            }
+        }
+
+        public int capacity()
+        {
+            return containerStack.capacity();
+        }
+
+        @Override
+        public boolean hasNext()
+        {
+            return !containerStack.isEmpty();
+        }
+
+        @Override
+        public E next() throws NoSuchElementException
+        {
+            if(!hasNext())
+            {
+                throw new NoSuchElementException();
+            }
+
+            pushNextChild(containerStack.peek());
+
+            return containerStack.pop().node.data;
+        }
+
+        @Override
+        public void remove() throws UnsupportedOperationException
+        {
+            throw new UnsupportedOperationException();
+        }
+    } // Nested class end
 
     // Nested static class begin
     protected static class DynamicNode<T>
@@ -347,6 +506,17 @@ public class DynamicTree <E extends Comparable> implements TreeTemplate<E>, Iter
 
                 return descendants;
             }
+        }
+
+
+        protected int leftMostIndex()
+        {
+            return 0;
+        }
+
+        protected int rightMostIndex()
+        {
+            return children.length - 1;
         }
 
     } // Nested static class end
