@@ -48,6 +48,22 @@ public final class SeparatingAxisTheorem
         List<Vector3D> onePoints = one.getAllPoints();
         List<Vector3D> twoPoints = two.getAllPoints();
 
+        double oneRotationX = 1, oneRotationY = 1, oneRotationZ = 1, twoRotationX = 1, twoRotationY = 1, twoRotationZ = 1;
+
+        if(one.rotation != null)
+        {
+            oneRotationX = one.rotation.x;
+            oneRotationY = one.rotation.y;
+            oneRotationZ = one.rotation.z;
+        }
+
+        if(two.rotation != null)
+        {
+            twoRotationX = two.rotation.x;
+            twoRotationY = two.rotation.y;
+            twoRotationZ = two.rotation.z;
+        }
+
 
 
         return false;

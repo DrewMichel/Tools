@@ -160,6 +160,27 @@ public class SeparatingAxisTheoremDriver extends JFrame
                     }
                 }
             }
+
+            // attempt to draw line
+
+            if(polygons.size() > 1)
+            {
+                Vector3D a0 = null;
+                Vector3D target1 = new Vector3D(0, 0, -2);
+                Vector3D target2 = Vector3D.subtraction(polygons.get(0).origin, polygons.get(0).getAllPoints().get(0));
+
+
+                a0 = Vector3D.crossProduct(target1, target2);
+
+                g.setColor(Color.WHITE);
+
+                g.drawLine((int) a0.x, (int) a0.y, (int) a0.x + 100, (int) a0.y + 100);
+
+                System.out.println("A0: " + a0);
+                System.out.println("TARGET 1: " + target1);
+                System.out.println("TARGET 2: " + target2);
+                System.out.println("DOT: " + Vector3D.dotProduct(target1, target2));
+            }
         }
     }
 

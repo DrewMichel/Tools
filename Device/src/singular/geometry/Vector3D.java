@@ -47,15 +47,37 @@ public class Vector3D
         return (x == temp.x && y == temp.y && z == temp.z);
     }
 
-    /*
     @Override
-    public int hashcode()
+    public int hashCode()
     {
-
+        return (int) ((x + 104059) * (y + 99469) * (z + 87679)); // prime numbers
     }
-     */
 
     // static functions
+
+    // Am I incorrect in assuming that a mathematical vector which represents a magnitude and direction
+    // is the same as a programmatic vector which represents an x, y, z position?
+
+    // Should I include rotation, distance from origin to edge, or some addition information?
+
+    // proj u
+    //     v
+    public static Vector3D project(Vector3D u, Vector3D v)
+    {
+        //                   dot     magnitude   multiply by scalar
+        // proj u onto v = ((u * v) / (|| v ||^2)) * v
+
+        double dotResult = dotProduct(u, v);
+
+        double magnitude = (v.x * v.x + v.y * v.y + v.z * v.z);
+        double magnitudeSquared = magnitude * magnitude;
+
+        double scalar = dotResult / magnitudeSquared;
+
+        Vector3D vectorResult = multiply(v, scalar);
+
+        return vectorResult;
+    }
 
     public static Vector3D subtraction(Vector3D one, Vector3D two)
     {
