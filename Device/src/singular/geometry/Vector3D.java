@@ -67,6 +67,16 @@ public class Vector3D
         return new Vector3D(one.x + two.x, one.y + two.y, one.z + two.z);
     }
 
+    public static Vector3D multiply(Vector3D vector, double scalar)
+    {
+        return new Vector3D(vector.x * scalar, vector.y * scalar, vector.z * scalar);
+    }
+
+    public static Vector3D divide(Vector3D vector, double scalar)
+    {
+        return new Vector3D(vector.x / scalar, vector.y / scalar, vector.z / scalar);
+    }
+
     // synonym for dot product
     public static Double scalarProduct(Vector3D one, Vector3D two)
     {

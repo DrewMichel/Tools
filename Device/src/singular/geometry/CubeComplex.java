@@ -23,7 +23,7 @@ public class CubeComplex extends Polygon
     /*
     public CubeComplex(Vector3D origin, double width, double height, double length, boolean originCenetered)
     {
-        
+
     }
      */
 
