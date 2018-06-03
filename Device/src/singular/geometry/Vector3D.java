@@ -5,6 +5,10 @@ package singular.geometry;
  */
 public class Vector3D
 {
+    // constants
+    static final Vector3D X_IDENTITY_VECTOR = new Vector3D(1, 0, 0), Y_IDENTITY_VECTOR = new Vector3D(0, 1, 0), Z_IDENTITY_VECTOR = new Vector3D(0, 0, 1);
+    static final Vector3D ZERO_VECTOR = new Vector3D(0, 0, 0);
+
     // member variables
     public double x, y, z;
 
@@ -30,7 +34,38 @@ public class Vector3D
         return x + ", " + y + ", " + z;
     }
 
+    @Override
+    public boolean equals(Object other)
+    {
+        if(other == null || other.getClass() != this.getClass())
+        {
+            return false;
+        }
+
+        Vector3D temp = (Vector3D) other;
+
+        return (x == temp.x && y == temp.y && z == temp.z);
+    }
+
+    /*
+    @Override
+    public int hashcode()
+    {
+
+    }
+     */
+
     // static functions
+
+    public static Vector3D subtraction(Vector3D one, Vector3D two)
+    {
+        return new Vector3D(one.x - two.x, one.y - two.y, one.z - two.z);
+    }
+
+    public static Vector3D addition(Vector3D one, Vector3D two)
+    {
+        return new Vector3D(one.x + two.x, one.y + two.y, one.z + two.z);
+    }
 
     // synonym for dot product
     public static Double scalarProduct(Vector3D one, Vector3D two)

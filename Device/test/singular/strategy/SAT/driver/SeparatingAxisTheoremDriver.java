@@ -71,6 +71,16 @@ public class SeparatingAxisTheoremDriver extends JFrame
         cube4.points.add(new Vector3D(170, 120, 400));
         cube4.points.add(new Vector3D(170, 50, 400));
 
+        // cube5 = new CubeComplex(origin, width, height, length, originCentered)
+        // generate points based on arguments
+        // if not originCentered, create at corner. otherwise create around origin
+
+        //System.out.println(CubeComplex.calculateOrigin(cube4.points));
+        cube1.origin = CubeComplex.calculateOrigin(cube1.points);
+        cube2.origin = CubeComplex.calculateOrigin(cube2.points);
+        cube3.origin = CubeComplex.calculateOrigin(cube3.points);
+        cube4.origin = CubeComplex.calculateOrigin(cube4.points);
+
         cube1.color = Color.RED;
         cube2.color = Color.GREEN;
         cube3.color = Color.BLUE;
@@ -108,8 +118,6 @@ public class SeparatingAxisTheoremDriver extends JFrame
 
                 if(currentPolygon != null && currentPolygon.getAllPoints() != null)
                 {
-
-
                     if(currentPolygon.color != null)
                     {
                         g.setColor(currentPolygon.color);
@@ -144,6 +152,11 @@ public class SeparatingAxisTheoremDriver extends JFrame
 
                             previousVector = currentVector;
                         }
+                    }
+
+                    if(currentPolygon.origin != null)
+                    {
+                        g.drawLine((int) currentPolygon.origin.x, (int) currentPolygon.origin.y, (int) currentPolygon.origin.x, (int) currentPolygon.origin.y);
                     }
                 }
             }
