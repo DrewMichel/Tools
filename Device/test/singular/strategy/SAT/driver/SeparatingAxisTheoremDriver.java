@@ -1,14 +1,24 @@
 package singular.strategy.SAT.driver;
 
-import singular.geometry.*;
 import singular.geometry.Polygon;
+import singular.geometry.Square2D;
+import singular.geometry.Vector2D;
 import singular.strategy.SAT.SeparatingAxisTheorem;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,14 +45,13 @@ public class SeparatingAxisTheoremDriver extends JFrame
         mouseSquare = new Square2D(0,0,2,2,0, Color.CYAN);
         mousePosition = new Point(0, 0);
 
-
         BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 
-// Create a new blank cursor.
+        // Create a new blank cursor
         Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
                 cursorImg, new Point(0, 0), "blank cursor");
 
-// Set the blank cursor to the JFrame.
+        // Set the blank cursor to the JFrame
         getContentPane().setCursor(blankCursor);
         /*
         rotation = 0;
