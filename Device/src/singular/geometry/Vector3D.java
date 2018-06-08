@@ -27,6 +27,14 @@ public class Vector3D
         this.z = z;
     }
 
+    public Vector3D(Vector3D other)
+    {
+        this.x = other.x;
+        this.y = other.y;
+        this.z = other.z;
+    }
+
+
     // member functions
     @Override
     public String toString()
@@ -137,4 +145,10 @@ public class Vector3D
         return product;
     }
 
+    /*
+    public Vector3D normal()
+    {
+        return new Vector3D()
+    }
+    */
 }

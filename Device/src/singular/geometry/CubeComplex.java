@@ -12,20 +12,49 @@ public class CubeComplex extends Polygon
     // member variables
     public List<Vector3D> points;
 
-
-
-    // constructor
+    // constructors
     public CubeComplex()
     {
         points = new ArrayList<>();
     }
 
-    /*
-    public CubeComplex(Vector3D origin, double width, double height, double length, boolean originCenetered)
+    public CubeComplex(Vector3D origin, double width, double height, double length, boolean originCentered)
     {
+        points = new ArrayList<>();
 
+        this.centerOrigin = originCentered;
+        this.origin = new Vector3D(origin);
+
+        /*
+        cube1.points.add(new Vector3D(100, 100, 100));
+        cube1.points.add(new Vector3D(100, 200, 100));
+        cube1.points.add(new Vector3D(200, 200, 100));
+        cube1.points.add(new Vector3D(200, 100, 100));
+
+        cube1.points.add(new Vector3D(100, 100, 200));
+        cube1.points.add(new Vector3D(100, 200, 200));
+        cube1.points.add(new Vector3D(200, 200, 200));
+        cube1.points.add(new Vector3D(200, 100, 200));
+         */
+
+        if(originCentered == true)
+        {
+            points.add(new Vector3D(origin.x - width / 2, origin.y - height / 2, origin.z - length / 2));
+            points.add(new Vector3D(origin.x - width / 2, origin.y + height / 2, origin.z - length / 2));
+            points.add(new Vector3D(origin.x + width / 2, origin.y + height / 2, origin.z - length / 2));
+            points.add(new Vector3D(origin.x + width / 2, origin.y - height / 2, origin.z - length / 2));
+
+            points.add(new Vector3D(origin.x - width / 2, origin.y - height / 2, origin.z + length / 2));
+            points.add(new Vector3D(origin.x - width / 2, origin.y + height / 2, origin.z + length / 2));
+            points.add(new Vector3D(origin.x + width / 2, origin.y + height / 2, origin.z + length / 2));
+            points.add(new Vector3D(origin.x + width / 2, origin.y - height / 2, origin.z + length / 2));
+        }
+        else
+        {
+            // implement later(?)
+        }
     }
-     */
+
 
     public List<Vector3D> getAllPoints()
     {
