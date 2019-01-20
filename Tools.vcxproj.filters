@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Device\src\singular\structure\xorlinkedlist\XORLinkedList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="docs\allclasses-frame.html" />
+    <None Include="docs\allclasses-noframe.html" />
+    <None Include="docs\constant-values.html" />
+    <None Include="docs\deprecated-list.html" />
+    <None Include="docs\help-doc.html" />
+    <None Include="docs\index.html" />
+    <None Include="docs\overview-frame.html" />
+    <None Include="docs\overview-summary.html" />
+    <None Include="docs\overview-tree.html" />
+    <None Include="docs\serialized-form.html" />
+    <None Include="docs\index-files\index-1.html" />
+    <None Include="docs\index-files\index-10.html" />
+    <None Include="docs\index-files\index-11.html" />
+    <None Include="docs\index-files\index-12.html" />
+    <None Include="docs\index-files\index-13.html" />
+    <None Include="docs\index-files\index-14.html" />
+    <None Include="docs\index-files\index-15.html" />
+    <None Include="docs\index-files\index-2.html" />
+    <None Include="docs\index-files\index-3.html" />
+    <None Include="docs\index-files\index-4.html" />
+    <None Include="docs\index-files\index-5.html" />
+    <None Include="docs\index-files\index-6.html" />
+    <None Include="docs\index-files\index-7.html" />
+    <None Include="docs\index-files\index-8.html" />
+    <None Include="docs\index-files\index-9.html" />
+    <None Include="docs\singular\cluster\comprised\Comprised.html" />
+    <None Include="docs\singular\cluster\comprised\package-frame.html" />
+    <None Include="docs\singular\cluster\comprised\package-summary.html" />
+    <None Include="docs\singular\cluster\comprised\package-tree.html" />
+    <None Include="docs\singular\factor\gcd\GreatestCommonDivisor.html" />
+    <None Include="docs\singular\factor\gcd\package-frame.html" />
+    <None Include="docs\singular\factor\gcd\package-summary.html" />
+    <None Include="docs\singular\factor\gcd\package-tree.html" />
+    <None Include="docs\singular\factor\lcm\LeastCommonMultiple.html" />
+    <None Include="docs\singular\factor\lcm\package-frame.html" />
+    <None Include="docs\singular\factor\lcm\package-summary.html" />
+    <None Include="docs\singular\factor\lcm\package-tree.html" />
+    <None Include="docs\singular\manipulation\reversedigit\package-frame.html" />
+    <None Include="docs\singular\manipulation\reversedigit\package-summary.html" />
+    <None Include="docs\singular\manipulation\reversedigit\package-tree.html" />
+    <None Include="docs\singular\manipulation\reversedigit\ReverseDigit.html" />
+    <None Include="docs\singular\manipulation\uniquesubstring\package-frame.html" />
+    <None Include="docs\singular\manipulation\uniquesubstring\package-summary.html" />
+    <None Include="docs\singular\manipulation\uniquesubstring\package-tree.html" />
+    <None Include="docs\singular\manipulation\uniquesubstring\UniqueSubstring.html" />
+    <None Include="docs\singular\sequence\factorial\FactorialIteration.html" />
+    <None Include="docs\singular\sequence\factorial\FactorialRecursion.html" />
+    <None Include="docs\singular\sequence\factorial\FactorialTracker.html" />
+    <None Include="docs\singular\sequence\factorial\InvalidFactorialException.html" />
+    <None Include="docs\singular\sequence\factorial\package-frame.html" />
+    <None Include="docs\singular\sequence\factorial\package-summary.html" />
+    <None Include="docs\singular\sequence\factorial\package-tree.html" />
+    <None Include="docs\singular\sequence\fibonacci\FibonacciIteration.html" />
+    <None Include="docs\singular\sequence\fibonacci\FibonacciRecursion.html" />
+    <None Include="docs\singular\sequence\fibonacci\InvalidFibonacciException.html" />
+    <None Include="docs\singular\sequence\fibonacci\package-frame.html" />
+    <None Include="docs\singular\sequence\fibonacci\package-summary.html" />
+    <None Include="docs\singular\sequence\fibonacci\package-tree.html" />
+    <None Include="docs\singular\sequence\prime\InvalidPrimeException.html" />
+    <None Include="docs\singular\sequence\prime\package-frame.html" />
+    <None Include="docs\singular\sequence\prime\package-summary.html" />
+    <None Include="docs\singular\sequence\prime\package-tree.html" />
+    <None Include="docs\singular\sequence\prime\PrimeExaminer.html" />
+    <None Include="docs\singular\sequence\prime\PrimeFinder.html" />
+    <None Include="docs\singular\sequence\prime\PrimeTracker.html" />
+    <None Include="docs\singular\sequence\sum\package-frame.html" />
+    <None Include="docs\singular\sequence\sum\package-summary.html" />
+    <None Include="docs\singular\sequence\sum\package-tree.html" />
+    <None Include="docs\singular\sequence\sum\SumCalculation.html" />
+    <None Include="docs\singular\sequence\sum\SumIteration.html" />
+    <None Include="docs\singular\sequence\sum\SumRecursion.html" />
+    <None Include="docs\singular\unit\monetary\ChangeCombination.html" />
+    <None Include="docs\singular\unit\monetary\package-frame.html" />
+    <None Include="docs\singular\unit\monetary\package-summary.html" />
+    <None Include="docs\singular\unit\monetary\package-tree.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Device\src\singular\structure\xorlinkedlist\XORLinkedList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

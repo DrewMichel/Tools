@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{C1CDFAB9-E68B-41F2-8615-3F2270A44DAD}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <ExecutablePath>$(ProjectDir)Device\test\singular\structure\xorlinkedlist\driver;$(ExecutablePath)</ExecutablePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <ExecutablePath>$(ProjectDir)Device\test\singular\structure\xorlinkedlist\driver;$(ExecutablePath)</ExecutablePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ExecutablePath>$(ProjectDir)Device\test\singular\structure\xorlinkedlist\driver;$(ExecutablePath)</ExecutablePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ExecutablePath>$(ProjectDir)Device\test\singular\structure\xorlinkedlist\driver;$(ExecutablePath)</ExecutablePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)Device\test\singular;$(ProjectDir)Device\src\singular;$(ProjectDir)Device\test\singular\structure\xorlinkedlist\driver;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(ProjectDir)Device\test\singular;$(ProjectDir)Device\src\singular;$(ProjectDir)Device\test\singular\structure\xorlinkedlist\driver;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)Device\test\singular;$(ProjectDir)Device\src\singular;$(ProjectDir)Device\test\singular\structure\xorlinkedlist\driver;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)Device\test\singular;$(ProjectDir)Device\src\singular;$(ProjectDir)Device\test\singular\structure\xorlinkedlist\driver;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Device\src\singular\structure\xorlinkedlist\XORLinkedList.cpp" />
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Device\src\singular\structure\xorlinkedlist\XORLinkedList.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="docs\allclasses-frame.html" />
+    <None Include="docs\allclasses-noframe.html" />
+    <None Include="docs\constant-values.html" />
+    <None Include="docs\deprecated-list.html" />
+    <None Include="docs\help-doc.html" />
+    <None Include="docs\index-files\index-1.html" />
+    <None Include="docs\index-files\index-10.html" />
+    <None Include="docs\index-files\index-11.html" />
+    <None Include="docs\index-files\index-12.html" />
+    <None Include="docs\index-files\index-13.html" />
+    <None Include="docs\index-files\index-14.html" />
+    <None Include="docs\index-files\index-15.html" />
+    <None Include="docs\index-files\index-2.html" />
+    <None Include="docs\index-files\index-3.html" />
+    <None Include="docs\index-files\index-4.html" />
+    <None Include="docs\index-files\index-5.html" />
+    <None Include="docs\index-files\index-6.html" />
+    <None Include="docs\index-files\index-7.html" />
+    <None Include="docs\index-files\index-8.html" />
+    <None Include="docs\index-files\index-9.html" />
+    <None Include="docs\index.html" />
+    <None Include="docs\overview-frame.html" />
+    <None Include="docs\overview-summary.html" />
+    <None Include="docs\overview-tree.html" />
+    <None Include="docs\serialized-form.html" />
+    <None Include="docs\singular\cluster\comprised\Comprised.html" />
+    <None Include="docs\singular\cluster\comprised\package-frame.html" />
+    <None Include="docs\singular\cluster\comprised\package-summary.html" />
+    <None Include="docs\singular\cluster\comprised\package-tree.html" />
+    <None Include="docs\singular\factor\gcd\GreatestCommonDivisor.html" />
+    <None Include="docs\singular\factor\gcd\package-frame.html" />
+    <None Include="docs\singular\factor\gcd\package-summary.html" />
+    <None Include="docs\singular\factor\gcd\package-tree.html" />
+    <None Include="docs\singular\factor\lcm\LeastCommonMultiple.html" />
+    <None Include="docs\singular\factor\lcm\package-frame.html" />
+    <None Include="docs\singular\factor\lcm\package-summary.html" />
+    <None Include="docs\singular\factor\lcm\package-tree.html" />
+    <None Include="docs\singular\manipulation\reversedigit\package-frame.html" />
+    <None Include="docs\singular\manipulation\reversedigit\package-summary.html" />
+    <None Include="docs\singular\manipulation\reversedigit\package-tree.html" />
+    <None Include="docs\singular\manipulation\reversedigit\ReverseDigit.html" />
+    <None Include="docs\singular\manipulation\uniquesubstring\package-frame.html" />
+    <None Include="docs\singular\manipulation\uniquesubstring\package-summary.html" />
+    <None Include="docs\singular\manipulation\uniquesubstring\package-tree.html" />
+    <None Include="docs\singular\manipulation\uniquesubstring\UniqueSubstring.html" />
+    <None Include="docs\singular\sequence\factorial\FactorialIteration.html" />
+    <None Include="docs\singular\sequence\factorial\FactorialRecursion.html" />
+    <None Include="docs\singular\sequence\factorial\FactorialTracker.html" />
+    <None Include="docs\singular\sequence\factorial\InvalidFactorialException.html" />
+    <None Include="docs\singular\sequence\factorial\package-frame.html" />
+    <None Include="docs\singular\sequence\factorial\package-summary.html" />
+    <None Include="docs\singular\sequence\factorial\package-tree.html" />
+    <None Include="docs\singular\sequence\fibonacci\FibonacciIteration.html" />
+    <None Include="docs\singular\sequence\fibonacci\FibonacciRecursion.html" />
+    <None Include="docs\singular\sequence\fibonacci\InvalidFibonacciException.html" />
+    <None Include="docs\singular\sequence\fibonacci\package-frame.html" />
+    <None Include="docs\singular\sequence\fibonacci\package-summary.html" />
+    <None Include="docs\singular\sequence\fibonacci\package-tree.html" />
+    <None Include="docs\singular\sequence\prime\InvalidPrimeException.html" />
+    <None Include="docs\singular\sequence\prime\package-frame.html" />
+    <None Include="docs\singular\sequence\prime\package-summary.html" />
+    <None Include="docs\singular\sequence\prime\package-tree.html" />
+    <None Include="docs\singular\sequence\prime\PrimeExaminer.html" />
+    <None Include="docs\singular\sequence\prime\PrimeFinder.html" />
+    <None Include="docs\singular\sequence\prime\PrimeTracker.html" />
+    <None Include="docs\singular\sequence\sum\package-frame.html" />
+    <None Include="docs\singular\sequence\sum\package-summary.html" />
+    <None Include="docs\singular\sequence\sum\package-tree.html" />
+    <None Include="docs\singular\sequence\sum\SumCalculation.html" />
+    <None Include="docs\singular\sequence\sum\SumIteration.html" />
+    <None Include="docs\singular\sequence\sum\SumRecursion.html" />
+    <None Include="docs\singular\unit\monetary\ChangeCombination.html" />
+    <None Include="docs\singular\unit\monetary\package-frame.html" />
+    <None Include="docs\singular\unit\monetary\package-summary.html" />
+    <None Include="docs\singular\unit\monetary\package-tree.html" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
