@@ -40,7 +40,7 @@ public class RecursiveFileMoverDriver
 
         if(args.length >= 2)
         {
-            search = args[2];
+            search = args[2].toLowerCase();
         }
 
         if(!parseForArguments(args, files))
@@ -60,16 +60,59 @@ public class RecursiveFileMoverDriver
 
         System.out.println("ITERATOR HAS NEXT: " + iterator.hasNext());
 
+        int moved = 0, fails = 0, matched = 0;
+        String substring, updatedPath;
+        boolean successfulMove;
+
+        File parent, newPath;
+
         while(iterator.hasNext())
         {
             current = iterator.next();
 
-            System.out.println(current.getPath());
+            if(current.getName().toLowerCase().contains(search))
+            {
+                //System.out.println(current.getName());
 
-            System.out.println("ITERATOR HAS NEXT: " + iterator.hasNext());
+                ++matched;
+
+                substring = current.getAbsolutePath().substring(files.get(ORIGINAL_DIRECTORY_INDEX).getAbsolutePath().length());
+
+                updatedPath = files.get(TARGET_DIRECTORY_INDEX).getAbsolutePath() + substring;
+
+                newPath = new File(updatedPath);
+
+                parent = newPath.getParentFile();
+
+                if(!parent.exists())
+                {
+                    recursivelyMakeDirectory(parent);
+                    System.out.println("MAKING DIRECTORY: " + parent.getAbsolutePath() + " - SUCCESS: " + parent.exists());
+                }
+                else
+                {
+                    System.out.println("DIRECTORY: " + parent.getAbsolutePath() + " - ALREADY EXISTS. PROCEEDING");
+                }
+
+                successfulMove = current.renameTo(newPath);
+
+                if(successfulMove)
+                {
+                    ++moved;
+                }
+                else
+                {
+                    ++fails;
+                }
+
+                System.out.println(updatedPath + " - SUCCESSFUL: " + successfulMove);
+            }
         }
 
         System.out.println("TOTAL FILES: " + rfa.getLinkedHashSet().size());
+        System.out.println("FILES MATCHED: " + matched);
+        System.out.println("FILES MOVED: " + moved);
+        System.out.println("FILES FAILED: " + fails);
     }
 
     private static boolean parseForArguments(String[] args, ArrayList<File> reference)
@@ -97,5 +140,15 @@ public class RecursiveFileMoverDriver
         }
 
         return true;
+    }
+
+    private static void recursivelyMakeDirectory(File currentFile)
+    {
+        if(!currentFile.exists())
+        {
+            recursivelyMakeDirectory(currentFile.getParentFile());
+
+            currentFile.mkdir();
+        }
     }
 }
