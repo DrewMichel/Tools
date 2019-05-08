@@ -382,7 +382,7 @@ public class SinglyLinkedList<E> implements List<E>
 
         public InnerListIterator()
         {
-            lastItemReturned =  head;
+            lastItemReturned = head;
             next = null;
         }
 
@@ -390,17 +390,23 @@ public class SinglyLinkedList<E> implements List<E>
         {
             if(index < 0 || index > size())
             {
-                throw new IndexOutOfBoundsException("" + index);
+                throw new IndexOutOfBoundsException("InnerListInterator IndexOutOfBoundsException at index: " + index);
             }
 
+            lastItemReturned = head;
+            next = null;
 
+            for(int i = 0; i < index; ++i)
+            {
+                next = lastItemReturned;
+                lastItemReturned = lastItemReturned.link;
+            }
         }
 
         @Override
         public boolean hasNext()
         {
-
-            return true;
+            return lastItemReturned != null;
         }
 
         @Override
@@ -411,7 +417,10 @@ public class SinglyLinkedList<E> implements List<E>
                 throw new NoSuchElementException();
             }
 
-            return null;
+            next = lastItemReturned;
+            lastItemReturned = lastItemReturned.link;
+
+            return next.data;
         }
 
         @Override
